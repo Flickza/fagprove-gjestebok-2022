@@ -5,6 +5,7 @@ export const fetchPosts = () => {
         url: "/posts",
         method: "GET",
         success: function (data) {
+            console.log(data);
             return data;
         },
         error: function (error) {
@@ -16,6 +17,7 @@ export const fetchPosts = () => {
 //render posts
 export const renderPosts = (posts) => {
     $(".messages").html("");
+    console.log(posts[0].updatedAt)
     //for each post append a new post to the messages div
     posts.forEach(function (message) {
         $(".messages").append(
@@ -35,22 +37,25 @@ export const renderPosts = (posts) => {
                         </div>            
                     </div>
                     <div class="cardContent d-flex flex-column">
-                        <span class="title fw-bold mt-2 px-2">${message.title}</span>
+                        <div class="cardTitle d-flex flex-row justify-content-between">
+                            <span class="title fw-bold mt-2 px-2">${message.title}</span>
+                            <span class="date mt-2">${message.createdAt.split("T")[0] + " " + message.createdAt.split("T")[1].split(".")[0]}</span>
+                        </div>
                         <hr>
-                        <span class="body mt-2 px-2">${message.body}</span>
+                        <div class="cardBody mt-2 px-2">
+                            <span class="body">${message.body}</span>
+                        </div>
                         <hr class="mt-1">
-                        <div class="cardFooter d-flex flex-md-row flex-lg-row justify-content-between flex-sm-column">
-                            <div class="actions">
-                                <span class="comment text-end fw-light mt-1">
+                        <div class="cardFooter">
+                            <div class="actions d-flex flex-row">
+                                <span class="comment text-end mt-1">
                                     <i class="bi bi-chat-square-dots px-2" style="font-size: 1.5rem; color: cornflowerblue;"></i>
                                 </span>
-                                <span class="quote text-end fw-light mt-1">
+                                <span class="quote text-end mt-1">
                                     <i class="bi bi-chat-square-quote" style="font-size: 1.5rem; color: cornflowerblue;"></i>
                                 </span>
-                            </div>
-                         <div class="date">
-                                <span class="date text-end fw-light mt-1">5 min ago. (${message.createdAt.split("T")[0] + " " + message.createdAt.split("T")[1].split(".")[0]})</span></div>
-                            </div>
+                                <span class="date ms-auto text-muted fs-9">Redigert: ${message.updatedAt.split("T")[0] + " " + message.updatedAt.split("T")[1].split(".")[0]}</span>
+                                </div>
                         </div>
                     </div>
                 </div>
@@ -77,6 +82,7 @@ export const renderFetch = async () => {
     });
 }
 
+//update post
 export const updatePost = (data, id) => {
     $.ajax({
         url: `/posts/${id}`,
@@ -88,6 +94,7 @@ export const updatePost = (data, id) => {
     });
 }
 
+//delete post
 export const deletePost = (id) => {
     $.ajax({
         url: `/posts/${id}`,

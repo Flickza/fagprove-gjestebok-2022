@@ -9,11 +9,32 @@
 
 .message {
   width: 80%;
+  overflow:hidden;
 }
 
 .cardContent {
   width: 100%;
 }
+.cardBody {
+  height:120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.childCardBody {
+  height:60px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.children {
+  width: 100%;
+}
+.child {
+  width: 75%;
+}
+
+
 hr {
   border: none;
   height: 1px;
@@ -27,4 +48,8 @@ hr {
 
 .bi:hover {
   cursor: pointer;
+}
+
+.date {
+  font-size: 15;
 }
