@@ -25,10 +25,10 @@ export const fetchPosts = () => {
                                 <hr>
                                 <span class="body mt-2 px-2">${message.body}</span>
                                 <hr class="mt-1">
-                                <div class="cardFooter d-flex flex-row justify-content-between">
+                                <div class="cardFooter d-flex flex-md-row flex-lg-row justify-content-between flex-sm-column">
                                     <div class="actions">
                                         <span class="comment text-end fw-light mt-1">
-                                        <i class="bi bi-chat-square-dots" style="font-size: 1.5rem; color: cornflowerblue;"></i>
+                                        <i class="bi bi-chat-square-dots px-2" style="font-size: 1.5rem; color: cornflowerblue;"></i>
                                         </span>
                                         <span class="quote text-end fw-light mt-1">
                                         <i class="bi bi-chat-square-quote" style="font-size: 1.5rem; color: cornflowerblue;"></i>
