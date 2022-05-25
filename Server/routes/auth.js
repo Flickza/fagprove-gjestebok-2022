@@ -4,7 +4,7 @@ import { googleAuth, googleAuthCallback, authScreen } from '../controllers/auth.
 const router = express.Router();
 
 router.get('/', authScreen);
-router.get('google/', googleAuth);
-router.get('google/callback', googleAuthCallback);
+router.get('/google', googleAuth);
+router.get('/google/callback', googleAuthCallback);
 
 export default router;

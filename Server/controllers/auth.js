@@ -1,3 +1,6 @@
+import passport from 'passport';
+import '../src/config/google.js';
+
 export const authScreen = (req, res) => {
     try {
         res.render("../views/auth.ejs", { root: "./" });
@@ -6,10 +9,25 @@ export const authScreen = (req, res) => {
     }
 }
 
-export const googleAuthCallback = (req, res) => {
-
+export const googleAuth = (req, res) => {
+    try {
+        passport.authenticate("google", {
+            scope: ["profile", "email"],
+        })
+    } catch (error) {
+        res.json({ message: error.message });
+    }
 }
 
-export const googleAuth = (req, res) => {
-
+export const googleAuthCallback = (req, res) => {
+    try {
+        passport.authenticate("google", {
+            failureRedirect: "/",
+            successRedirect: "/",
+            failureFlash: true,
+            successFlash: "Successfully logged in!",
+        })
+    } catch (error) {
+        res.json({ message: error.message });
+    }
 }
