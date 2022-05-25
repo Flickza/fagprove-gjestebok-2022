@@ -5,3 +5,21 @@
   padding: 0;
   margin: 0;
 }
+
+.message {
+  width: 80%;
+}
+
+.cardContent {
+  width: 100%;
+}
+hr {
+  border: none;
+  height: 1px;
+  line-height: 1px;
+  margin: 0px;
+  padding: 0px;
+  /* Set the hr color */
+  color: #333; /* old IE */
+  background-color: #333; /* Modern Browsers */
+}

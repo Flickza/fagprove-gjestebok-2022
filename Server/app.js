@@ -12,6 +12,7 @@ import passport from 'passport';
 //routes
 import authRoutes from './routes/auth.js';
 import homeRoute from './routes/home.js';
+import postRoutes from './routes/posts.js';
 
 const app = express();
 dotenv.config();
@@ -38,7 +39,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/auth', authRoutes);
-// app.use('/posts', postRoutes);
+app.use('/posts', postRoutes);
 
 
 const CONNECTION_URL = process.env.CONN_URL;

@@ -16,7 +16,9 @@
   <body>
     <div class="main">
       <!-- Navbar -->
-      <nav class="navbar navbar-dark bg-dark navbar-expand-lg fixed-top fw-bold">
+      <nav
+        class="navbar navbar-dark bg-dark navbar-expand-lg fixed-top fw-bold"
+      >
         <div class="container-fluid">
           <div
             class="collapse navbar-collapse d-flex justify-content-between"
@@ -24,7 +26,9 @@
           >
             <ul class="navbar-nav mb-2 mb-lg-0">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Navbar</a>
+                <a class="nav-link active" aria-current="page" href="#"
+                  >Navbar</a
+                >
               </li>
             </ul>
             <ul class="navbar-nav mb-2 mb-lg-0">
@@ -34,7 +38,9 @@
             </ul>
             <ul class="navbar-nav mb-2 mb-lg-0">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="/auth">Innlogging</a>
+                <a class="nav-link active" aria-current="page" href="/auth"
+                  >Innlogging</a
+                >
               </li>
             </ul>
           </div>
@@ -46,8 +52,9 @@
         <div class="row px-3">
           <!-- Messages column -->
           <div class="col-sm-12 col-md-8 mt-1 bg-light border-end border-2">
-            <div class="messages d-flex align-items-center">
+            <div class="messages d-flex flex-column align-items-center mt-5">
               <!-- Message -->
+              <!-- End of Message -->
             </div>
           </div>
           <!-- End of Messages column -->
@@ -56,17 +63,32 @@
             <div class="postForm mt-5">
               <div class="card border border-1 px-4">
                 <h3 class="text-center mt-3">Nytt Innlegg</h3>
-                <form action="">
+                <form id="newPost">
                   <div class="mb-3">
-                    <label for="exampleFormControlInput1" class="form-label">Tittel</label>
-                    <input type="email" class="form-control" placeholder="Tittel...">
+                    <label class="form-label">Tittel</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="title"
+                      placeholder="Tittel..."
+                      maxlength="100"
+                      required
+                    />
                   </div>
                   <div class="mb-3">
-                    <label for="exampleFormControlTextarea1" class="form-label">Melding</label>
-                    <textarea class="form-control" rows="3" placeholder="Skriv en melding..."></textarea>
+                    <label class="form-label">Melding</label>
+                    <textarea
+                      class="form-control"
+                      rows="4"
+                      name="body"
+                      placeholder="Skriv en melding..."
+                      maxlength="280"
+                      required
+                    ></textarea>
                   </div>
                   <div class="mb-3 d-flex justify-content-end">
-                    <button type="button" class="btn btn-primary">Post</button>
+                    <button id="submitMessage" type="submit" class="btn btn-primary">Post</button>
                   </div>
                 </form>
               </div>
@@ -92,5 +114,25 @@
       integrity="sha384-kjU+l4N0Yf4ZOJErLsIcvOU2qSb74wXpOhqTvwVx3OElZRweTnQ6d31fXEoRD1Jy"
       crossorigin="anonymous"
     ></script>
+    <script type="module">
+      import { fetchPosts, createPost } from "/js/Post.js";
+      $(document).ready(function () {
+        //fetch all posts
+        fetchPosts();
+        //submit a new post
+        $("#submitMessage").on("click", (e) => {
+          e.preventDefault();
+          const title = $("input[name='title']").val();
+          const body = $("textarea[name='body']").val();
+          if(title && body != undefined){
+            createPost(title, body);
+            $("#newPost input[name=title], #newPost textarea[name='body']").val("");
+            fetchPosts();
+          } else {
+            alert("Du må fylle ut alle feltene");
+          }
+        });
+      });
+    </script>
   </body>
 </html>

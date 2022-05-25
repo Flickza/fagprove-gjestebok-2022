@@ -1,16 +1,25 @@
 import mongoose from "mongoose";
 
 const Post = mongoose.Schema({
-    user: String,
-    title: String,
-    body: String,
+    user:{
+        type: String,
+        required: true  
+    },
+    title: {
+        type: String,
+        required: true  
+    },
+    body: {
+        type: String,
+        required: true  
+    },
     createdAt: {
         type: Date,
         default: new Date()
     },
 });
 
-const PostMessage = mongoose.model('PostMessage', Post);
+const PostMessage = mongoose.model('post', Post);
 
 
 export default PostMessage;
