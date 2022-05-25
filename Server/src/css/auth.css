@@ -11,6 +11,9 @@
     height: 800px;
     font-size: 35px;
 }
+.goback {
+  font-size: 20px;
+}
 .btn-auth {
     width: 586px;
     height: 114px;

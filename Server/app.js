@@ -3,22 +3,25 @@ import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
-// import postRoutes from './routes/posts.js';
-// import authRoutes from './routes/auth.js';
+import authRoutes from './routes/auth.js';
+import homeRoute from './routes/home.js';
 
 const app = express();
 
 dotenv.config();
 
+app.set('view engine', 'ejs');
+
 app.use(bodyParser.json({ limit: '50mb', extended: true }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 app.use(cors());
 
-app.use('/', (req, res) => {
-  res.sendFile('./src/html/index.html', { root: "./" });
-});
+app.use(express.static("./" + 'src'));
 
-// app.use('/auth', authRoutes);
+
+
+app.use('/', homeRoute);
+app.use('/auth', authRoutes);
 // app.use('/posts', postRoutes);
 
 
