@@ -23,7 +23,9 @@
           <div class="collapse navbar-collapse d-flex justify-content-between">
             <ul class="navbar-nav mb-2 mb-lg-0">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Navbar</a>
+                <a class="nav-link active" aria-current="page" href="#"
+                  >Navbar</a
+                >
               </li>
             </ul>
             <ul class="navbar-nav mb-2 mb-lg-0">
@@ -33,7 +35,9 @@
             </ul>
             <ul class="navbar-nav mb-2 mb-lg-0">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="/auth">Innlogging</a>
+                <a class="nav-link active" aria-current="page" href="/auth"
+                  >Innlogging</a
+                >
               </li>
             </ul>
           </div>
@@ -55,33 +59,20 @@
           <div class="col-sm-12 col-md-4 mt-1 bg-light">
             <div class="postForm mt-5">
               <div class="card border border-1 px-4">
-                <h3 class="text-center mt-3">Nytt Innlegg</h3>
-                <form id="newPost">
+                <h3 class="formTitle text-center mt-3">Nytt Innlegg</h3>
+                <form id="Post" state="CREATE">
                   <div class="mb-3">
-                    <label class="form-label">Tittel</label
-                    >
-                    <input
-                      type="text"
-                      class="form-control"
-                      name="title"
-                      placeholder="Tittel..."
-                      maxlength="100"
-                      required
-                    />
+                    <label class="form-label">Tittel</label>
+                    <input type="text" class="form-control" name="title" placeholder="Tittel..." maxlength="100" required/>
                   </div>
                   <div class="mb-3">
                     <label class="form-label">Melding</label>
-                    <textarea
-                      class="form-control"
-                      rows="4"
-                      name="body"
-                      placeholder="Skriv en melding..."
-                      maxlength="280"
-                      required
-                    ></textarea>
+                    <textarea class="form-control" rows="4" name="body" placeholder="Skriv en melding..." maxlength="280" required></textarea>
                   </div>
                   <div class="mb-3 d-flex justify-content-end">
-                    <button id="submitMessage" type="submit" class="btn btn-primary">Post</button>
+                    <button id="submitMessage" type="submit" class="btn btn-primary">
+                      Post
+                    </button>
                   </div>
                 </form>
               </div>
@@ -108,24 +99,7 @@
       crossorigin="anonymous"
     ></script>
     <script type="module">
-      import { fetchPosts, createPost } from "/js/Post.js";
-      $(document).ready(function () {
-        //fetch all posts
-        fetchPosts();
-        //submit a new post
-        $("#submitMessage").on("click", (e) => {
-          e.preventDefault();
-          const title = $("input[name='title']").val();
-          const body = $("textarea[name='body']").val();
-          if(title && body != undefined){
-            createPost(title, body);
-            $("#newPost input[name=title], #newPost textarea[name='body']").val("");
-            fetchPosts();
-          } else {
-            alert("Du må fylle ut alle feltene");
-          }
-        });
-      });
+      import "/js/Index.js";
     </script>
   </body>
 </html>

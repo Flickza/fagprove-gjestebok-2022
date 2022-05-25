@@ -40,3 +40,31 @@ export const createPost = (req, res) => {
         res.json(error);
     }
 }
+
+export const updatePost = (req, res) => {
+    //get variables from form post
+    const id = req.params.id;
+    const title = req.body.title;
+    const body = req.body.body;
+
+    console.log(id, title, body);
+    //update model with variables from form post
+    PostMessage.findByIdAndUpdate(id, { $set: { title: title, body: body, updatedAt: new Date() } }, { new: true }, (err, post) => {
+        if (err) {
+            res.json(err);
+        }
+        res.json(post);
+    });
+}
+
+export const deletePost = (req, res) => {
+    //get variables from form post
+    const id = req.params.id;
+    //delete model with variables from form post
+    PostMessage.findByIdAndDelete(id, (err, post) => {
+        if (err) {
+            res.json(err);
+        }
+        res.json(post);
+    });
+}
