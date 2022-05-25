@@ -1,0 +1,25 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+
+* {
+  font-family: "Roboto", sans-serif;
+  padding: 0;
+  margin: 0;
+}
+.main {
+    margin-top: 5%;
+    width: 943px;
+    height: 800px;
+    font-size: 35px;
+}
+.btn-auth {
+    width: 586px;
+    height: 114px;
+    font-size: 41px;
+}
+  
+  
+  
+  
+  
+  
+  
