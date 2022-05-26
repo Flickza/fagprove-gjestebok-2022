@@ -3,7 +3,7 @@ import '../src/config/google.js';
 
 export const localLoginScreen = (req, res) => {
     try {
-        res.render('../views/login.ejs', {root: './'});
+        res.render('../views/auth/login.ejs', {root: './'});
     } catch (error) {
         res.json({ message: error.message });
     }
@@ -13,9 +13,17 @@ export const localLoginAuth = (req, res) => {
     console.log(req);
 }
 
+export const localRegisterScreen = (req, res) => {
+    try {
+        res.render('../views/auth/register.ejs', {root: './'});
+    } catch (error) {
+        res.json({ message: error.message });
+    }
+}
+
 export const authScreen = (req, res) => {
     try {
-        res.render("../views/auth.ejs", { root: "./" });
+        res.render("../views/auth/auth.ejs", { root: "./" });
     } catch (error) {
         res.json({ message: error.message });
     }

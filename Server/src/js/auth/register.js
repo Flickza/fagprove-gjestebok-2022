@@ -1,6 +1,6 @@
 $(document).ready(function() {
     //login form handler
-    $('#login-form').submit(function (e) {
+    $('#newUser-form').submit(function (e) {
         e.preventDefault();
         let form = $(this);
         let formData = form.serialize();

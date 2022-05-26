@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import passportLocalMongoose from "passport-local-mongoose";
 
 const User = mongoose.Schema({
     email: {
@@ -19,6 +20,8 @@ const User = mongoose.Schema({
         default: new Date()
     },
 });
+
+User.plugin(passportLocalMongoose);
 
 const UserModel = mongoose.model('User', User);
 
