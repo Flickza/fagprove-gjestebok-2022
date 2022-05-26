@@ -1,21 +1,29 @@
-import { deletePost, renderFetch, commentPost, deleteComment } from "/js/Post.js";
-import { handleFormState, handleFormSubmit } from "/js/Form.js";
+import { deletePost, renderFetch, commentPost, deleteComment } from "./Post.js";
+import { handleFormState, handleFormSubmit } from "./Form.js";
 
 await renderFetch();
+
 //edit post handler
 $(document.body).on("click", "div.edit", (e) => {
+    //get parent parent element of post
     const post = $(e.target).parents().eq(4);
-
+    //state variable
+    const state = "UPDATE";
+    
     const postId = post.attr("data-id");
     const title = post.find(".cardContent .title").text();
     const body = post.find(".cardContent .body").text();
 
-    $("form#Post").attr("state", "UPDATE");
+    //set form state and data-id
+    $("form#Post").attr("state", state);
     $("form#Post").attr("data-id", postId);
 
+    //set form inputs
     $("form#Post input[name='title']").val(title);
     $("form#Post textarea[name='body']").val(body);
-    handleFormState("UPDATE");
+
+    //handle form state
+    handleFormState(state);
 });
 
 //comment post handler
@@ -71,6 +79,15 @@ $(document.body).on("click", "div.deleteComment", async (e) => {
     await renderFetch();
 });
 
+//form reset handler
+$(document.body).on("reset", "form#Post", () => {
+    const defaultState = "CREATE";
+    //set state back to create and id to empty
+    $("form#Post").attr("state", defaultState);
+    $("form#Post").attr("data-id", "null");
+    
+    handleFormState(defaultState);
+});
 
 //form submit handler
 $(document.body).on("submit", "form#Post", async (e) => {
@@ -93,9 +110,3 @@ $(document.body).on("submit", "form#Post", async (e) => {
     await renderFetch();
 });
 
-//form reset handler
-$("form#Post").on("reset", () => {
-    //set state back to create and id to empty
-    $("form#Post").attr("state", "CREATE");
-    $("form#Post").attr("data-id", "");
-});

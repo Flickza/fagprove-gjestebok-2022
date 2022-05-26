@@ -1,29 +1,30 @@
-
-import { createPost, updatePost } from "/js/Post.js";
+import { createPost, updatePost } from "./Post.js";
 
 export const handleFormState = (state) => {
+    console.log(state);
     switch (state) {
         case "CREATE":
+            //set create title text
             $(".formTitle").text("Nytt Innlegg");
             //set button text
             $("#submitMessage").text("Post");
+            break;
         case "UPDATE":
             //sett create post text
             $(".formTitle").text("Rediger Innlegg");
-
             //set button text
             $("#submitMessage").text("Rediger");
+            break;
     }
 };
 
 export const handleFormSubmit = async (state, data, id) => {
-    console.log(state,data,id);
+    console.log(state, data, id);
     switch (state) {
         case "CREATE":
             //create new Post
             try {
                 await createPost(data);
-                alert("Created!");
             } catch (error) {
                 alert(error);
             }
@@ -34,7 +35,6 @@ export const handleFormSubmit = async (state, data, id) => {
             try {
                 if (id != undefined) {
                     await updatePost(data, id);
-                    alert("Updated!");
                 }
             } catch (error) {
                 alert(error);

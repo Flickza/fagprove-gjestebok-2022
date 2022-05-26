@@ -14,10 +14,9 @@ export const fetchPosts = () => {
     });
 };
 
-//render posts
+//generate html markup for posts
 export const renderPosts = (posts) => {
-    $(".messages").html("");
-    //for each post append a new post to the messages div
+    //for each post generate html markup
     let messages = posts.map((message) => {
         return `
         <div data-id="${message._id}" class="card message mt-2">
@@ -84,8 +83,11 @@ export const renderPosts = (posts) => {
                 </div>
           </div>`; 
     }).join("");
-    $(".messages").append(messages);
+
+    //return markup
+    return messages;
 }
+
 //create a new post 
 export const createPost = (data) => {
     $.ajax({
@@ -101,7 +103,8 @@ export const createPost = (data) => {
 //fetch and render Posts;
 export const renderFetch = async () => {
     await fetchPosts().then(function (data) {
-        renderPosts(data);
+        const html = renderPosts(data);
+        $(".messages").html(html);
     });
 }
 

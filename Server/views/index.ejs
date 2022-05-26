@@ -10,7 +10,7 @@
       integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="../css/index.css" />
+    <link rel="stylesheet" href="/css/index/index.css" />
     <title>Hjem</title>
   </head>
   <body>
@@ -23,9 +23,7 @@
           <div class="collapse navbar-collapse d-flex justify-content-between">
             <ul class="navbar-nav mb-2 mb-lg-0">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#"
-                  >Navbar</a
-                >
+                <a class="nav-link active" aria-current="page" href="#">Navbar</a>
               </li>
             </ul>
             <ul class="navbar-nav mb-2 mb-lg-0">
@@ -35,9 +33,7 @@
             </ul>
             <ul class="navbar-nav mb-2 mb-lg-0">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="/auth"
-                  >Innlogging</a
-                >
+                <a class="nav-link active" aria-current="page" href="/auth">Innlogging</a>
               </li>
             </ul>
           </div>
@@ -49,10 +45,31 @@
         <div class="row px-3 d-flex flex-lg-row flex-sm-row-reverse">
           <!-- Messages column -->
           <div class="col-sm-12 col-md-8 mt-1 bg-light border-end border-2">
-            <div class="messages d-flex flex-column align-items-center mt-5">
+            <div class="messages d-flex flex-column align-items-center mt-5 mb-5">
               <!-- Messages -->
               <!-- End of Messages -->
             </div>
+            <!-- Start of pagination -->
+            <div class="pagination d-flex flex-row align-items-center justify-content-center">
+              <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                  <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Previous">
+                      <span aria-hidden="true">&laquo;</span>
+                    </a>
+                  </li>
+                  <li class="page-item"><a class="page-link" href="#">1</a></li>
+                  <li class="page-item"><a class="page-link" href="#">2</a></li>
+                  <li class="page-item"><a class="page-link" href="#">3</a></li>
+                  <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Next">
+                      <span aria-hidden="true">&raquo;</span>
+                    </a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+            <!-- End of pagination -->
           </div>
           <!-- End of Messages column -->
           <!-- Form column -->
@@ -60,6 +77,7 @@
             <div class="postForm mt-5">
               <div class="card border border-1 px-4">
                 <h3 class="formTitle text-center mt-3">Nytt Innlegg</h3>
+                <hr class="mb-2">
                 <form id="Post" state="CREATE">
                   <div class="mb-3">
                     <label class="form-label">Tittel</label>
@@ -116,6 +134,6 @@
       integrity="sha384-kjU+l4N0Yf4ZOJErLsIcvOU2qSb74wXpOhqTvwVx3OElZRweTnQ6d31fXEoRD1Jy"
       crossorigin="anonymous"
     ></script>
-    <script type="module" src="/js/Index.js"></script>
+    <script type="module" src="/js/Index/Index.js"></script>
   </body>
 </html>

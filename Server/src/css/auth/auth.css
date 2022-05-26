@@ -19,8 +19,20 @@
     height: 114px;
     font-size: 41px;
 }
-  
-  
+.btn-back {
+  width: 586px;
+  height: 114px;
+  font-size: 41px;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+a:hover {
+  text-decoration: none;
+  color: inherit;
+}
   
   
   

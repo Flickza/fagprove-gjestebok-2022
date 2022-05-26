@@ -11,14 +11,16 @@
       integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="/css/auth.css" />
+    <link rel="stylesheet" href="/css/auth/auth.css" />
   </head>
   <body class="bg-dark">
-    <div class="main container bg-white text-black d-flex justify-content-center">
+    <div class="main container bg-white text-black d-flex justify-content-center rounded-5 shadow">
       <div class="buttons d-flex flex-column align-items-center justify-content-center">
             <button type="button" class="btn btn-auth fw-bold mt-4 border shadow">
-                <img src="/svg/epost.svg" width="50px" height="50px">
+              <a href="/auth/login">
+                <img src="/svg/epost.svg" width="60px" height="60px">
                 <span class="px-3">Logg inn med E-post</span>
+              </a>
             </button>
             <button type="button" class="btn btn-auth fw-bold mt-4 border shadow">
                 <a href="/auth/google">
@@ -30,8 +32,18 @@
                 <img src="/svg/apple_logo_white.svg" width="50px" height="50px">
                 <span class="me-4 px-3">Fortsett med Apple</span>
             </button>
-            <span class="mt-3">Registrer en ny <a href="#">bruker</a>?</span>
-            <span class="mt-3 goback">Gå <a href="/">tilbake</a>?</span>
+            <button type="button" class="btn btn-back fw-bold mt-4 border shadow">
+               <a href="/auth/login">
+                <img src="/svg/epost.svg" width="60px" height="60px">
+                <span class="px-3">Registrer med E-post</span>
+              </a>
+            </button>
+            <button type="button" class="btn btn-back fw-bold mt-4 border shadow">
+              <a href="/">
+                <img src="/svg/back-arrow-svgrepo-com.svg" width="50px" height="50px">
+                <span class="px-3">Gå Tilbake</span>
+              </a>
+            </button>
           </div>
       </div>
     </div>

@@ -1,0 +1,44 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+
+* {
+  font-family: "Roboto", sans-serif;
+  padding: 0;
+  margin: 0;
+}
+.main {
+    margin-top: 5%;
+    width: 943px;
+    height: 800px;
+    font-size: 20px;
+}
+
+.loginForm {
+    width: 60%;
+    height: 60%;
+}
+
+  
+.btn-back {
+  width:100%;
+  height: 60px;
+  font-size: 20px;
+}
+
+.btn-login {
+  width:100%;
+  height: 60px;
+  font-size: 20px;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+a:hover {
+  text-decoration: none;
+  color: inherit;
+}
+  
+  
+  
+  
