@@ -1,5 +1,6 @@
 //import model
 import PostMessage from '../models/Post.js';
+import mongoose from 'mongoose';
 
 export const getPosts = (req, res) => {
     //find all posts of Model
@@ -68,7 +69,8 @@ export const commentPost = (req, res) => {
     PostMessage.findByIdAndUpdate(id, {
         $push: {
             comments: {
-                user: "testuser",
+                _id: new mongoose.Types.ObjectId(),
+                user: userId,
                 comment: comment,
                 createdAt: new Date()
             }
@@ -91,4 +93,20 @@ export const deletePost = (req, res) => {
         }
         res.json(post);
     });
+}
+
+export const deleteComment = (req, res) => {
+    //get variables from form post
+    const postId = req.params.postId;
+    const commentId = req.params.commentId;
+
+    //delete object from posts array with comment of id
+    PostMessage.findByIdAndUpdate(postId,
+        { $pull: { comments: { _id: mongoose.Types.ObjectId(commentId) } } },
+        (err, post) => {
+            if (err) {
+                res.json(err);
+            }
+            res.json(post);
+        });
 }

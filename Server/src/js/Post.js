@@ -65,7 +65,7 @@ export const renderPosts = (posts) => {
                 <div class="children d-flex flex-column align-items-end">
                 ${message.comments.map((c) => {
                 return `
-                    <div data-id="" class="child mt-2 mb-2">
+                    <div data-id="${c._id}" class="child mt-2 mb-2">
                         <div class="card d-flex flex-row align-items-center">
                             <div class="cardAuthor px-3 border-end">
                                 ${c.user}
@@ -74,7 +74,7 @@ export const renderPosts = (posts) => {
                                 ${c.comment}
                             </div>
                             <div class="card-actions">
-                                <div class="delete mt-1">
+                                <div class="deleteComment mt-1">
                                     <i class="bi bi-trash3 px-1" style="font-size: 1.2rem; color: cornflowerblue;"></i>   
                                 </div>
                             </div>
@@ -128,12 +128,23 @@ export const deletePost = (id) => {
     });
 }
 
-//comment post post
+//comment post
 export const commentPost = (id, data) => {
     $.ajax({
         url: `/posts/comment/${id}`,
         method: "PATCH",
         data: data,
+        success: function (data) {
+            console.log(data);
+        },
+    });
+}
+
+//delete comment
+export const deleteComment = (postId, commentId) => {
+    $.ajax({
+        url: `/posts/comment/${postId}/${commentId}`,
+        method: "DELETE",
         success: function (data) {
             console.log(data);
         },

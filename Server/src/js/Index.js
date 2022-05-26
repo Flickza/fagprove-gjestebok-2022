@@ -1,4 +1,4 @@
-import { deletePost, renderFetch, commentPost } from "/js/Post.js";
+import { deletePost, renderFetch, commentPost, deleteComment } from "/js/Post.js";
 import { handleFormState, handleFormSubmit } from "/js/Form.js";
 
 await renderFetch();
@@ -41,13 +41,35 @@ $(document.body).on("click", "button.postComment", async (e) => {
 
 //delete post handler
 $(document.body).on("click", "div.delete", async (e) => {
-    const post = $(e.target).parents().eq(4);
+    const post = $(e.currentTarget).parents().eq(3);
     const postId = post.attr("data-id");
 
     await deletePost(postId);
     alert("Deleted!");
     await renderFetch();
 });
+
+//delete comment handler
+$(document.body).on("click", "div.deleteComment", async (e) => {
+    //get parent post
+    const post = $(e.currentTarget).parents().eq(4);
+    //get id of parent post
+    const postId = post.attr("data-id");
+
+    //get comment
+    const comment = $(e.currentTarget).parents().eq(2);
+    //get id of comment
+    const commentId = comment.attr("data-id");
+
+    //delete comment
+    await deleteComment(postId, commentId);
+    //alert
+    alert("Deleted!");
+    
+    //render updated posts
+    await renderFetch();
+});
+
 
 //form submit handler
 $(document.body).on("submit", "form#Post", async (e) => {
