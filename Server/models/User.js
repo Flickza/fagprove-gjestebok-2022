@@ -10,7 +10,6 @@ const User = mongoose.Schema({
     firstName: String,
     lastName: String,
     profilePhoto: String,
-    password: String,
     source: {
         type: String,
         required: true

@@ -5,5 +5,18 @@ $(document).ready(function() {
         let form = $(this);
         let formData = form.serialize();
         console.log(formData);
+        $.ajax({
+            url: '/auth/login',
+            method: 'POST',
+            data: formData,
+            success: function (data) {
+                if (data.success) {
+                    console.log(data);
+                } else {
+                    const errorMessage = data;
+                    console.log(errorMessage);
+                }
+            }
+        })
     });
 })
