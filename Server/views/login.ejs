@@ -21,7 +21,7 @@
                 <span class="px-3">Logg inn med E-post</span>
                 <hr>
             </div>
-            <form action="/auth/login" method="POST" class="mt-1">
+            <form id="login-form" action="/auth/login" method="POST" class="mt-1">
                 <div class="form-group mb-3">
                     <label for="email">E-post</label>
                     <input type="email" class="form-control" id="email" name="email" placeholder="E-post" required>
@@ -57,5 +57,6 @@
       integrity="sha384-kjU+l4N0Yf4ZOJErLsIcvOU2qSb74wXpOhqTvwVx3OElZRweTnQ6d31fXEoRD1Jy"
       crossorigin="anonymous"
     ></script>
+    <script src="/js/auth/login.js"></script>
   </body>
 </html>
