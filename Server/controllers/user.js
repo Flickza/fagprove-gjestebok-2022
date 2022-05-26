@@ -17,6 +17,13 @@ passport.use(new LocalStrategy({
     }
 ));
 
+export const logout = (req, res, next) => {
+    req.logout((err) => {
+        if (err) { return next(err); }
+        res.redirect('/');
+    });
+}
+
 export const localLoginScreen = (req, res) => {
     try {
         res.render('../views/auth/login.ejs', { root: './' });
