@@ -54,7 +54,7 @@ export const renderPosts = (posts) => {
                             </div>
                             <hr class="mt-1 mb-2">
                                 <div class="commentField input-group mb-1 px-3">
-                                    <input type="text" class="form-control" name="commentField" placeholder="Kommentar...">
+                                    <input type="text" class="form-control" maxLength="50" name="commentField" placeholder="Kommentar... (Maks 50 Karakterer)">
                                     <button class="btn btn-primary postComment" type="button">
                                     <i class="bi bi-send-fill" style="color:white;"></i>
                                     </button>

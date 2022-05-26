@@ -20,22 +20,26 @@ $(document.body).on("click", "div.edit", (e) => {
 
 //comment post handler
 $(document.body).on("click", "button.postComment", async (e) => {
-    //get the parent div of the post
+    //Get the parent div of the post
     const post = $(e.currentTarget).parents().eq(4);
 
-    //get commentText
+    //Get commentText
     const commentField = post.find("input[name='commentField']");
-    if (commentField.val().length < 10) return;
+    if (commentField.val().length > 50) return;
 
-    //extract data-id from the parent div
+    //Extract data-id from the parent div
     const postId = post.attr("data-id");
-    
-    //get comment text
+
+    //Get comment text
     const comment = commentField.serialize();
 
+    //Comment post
     await commentPost(postId, comment);
-    alert("Commented!");
+    
+    //reset field
     commentField.trigger("reset");
+    
+    //re-render posts
     await renderFetch();
 })
 
@@ -45,7 +49,6 @@ $(document.body).on("click", "div.delete", async (e) => {
     const postId = post.attr("data-id");
 
     await deletePost(postId);
-    alert("Deleted!");
     await renderFetch();
 });
 
@@ -63,9 +66,7 @@ $(document.body).on("click", "div.deleteComment", async (e) => {
 
     //delete comment
     await deleteComment(postId, commentId);
-    //alert
-    alert("Deleted!");
-    
+
     //render updated posts
     await renderFetch();
 });
