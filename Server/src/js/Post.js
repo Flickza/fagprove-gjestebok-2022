@@ -17,11 +17,10 @@ export const fetchPosts = () => {
 //render posts
 export const renderPosts = (posts) => {
     $(".messages").html("");
-    console.log(posts[0].updatedAt)
     //for each post append a new post to the messages div
-    posts.forEach(function (message) {
-        $(".messages").append(
-            `<div data-id="${message._id}" class="card message mt-2">
+    let messages = posts.map((message) => {
+        return `
+        <div data-id="${message._id}" class="card message mt-2">
                 <div class="card-body d-flex flex-md-row flex-md-column flex-lg-row">
                     <div class="cardAuthor d-flex flex-column px-5 align-items-center border-end">
                         <p><a href="#">${message.user}</a></p>
@@ -47,21 +46,45 @@ export const renderPosts = (posts) => {
                         </div>
                         <hr class="mt-1">
                         <div class="cardFooter">
-                            <div class="actions d-flex flex-row">
-                                <span class="comment text-end mt-1">
-                                    <i class="bi bi-chat-square-dots px-2" style="font-size: 1.5rem; color: cornflowerblue;"></i>
-                                </span>
+                            <div class="actions d-flex flex-row align-items-center">
                                 <span class="quote text-end mt-1">
-                                    <i class="bi bi-chat-square-quote" style="font-size: 1.5rem; color: cornflowerblue;"></i>
+                                    <i class="bi bi-chat-square-quote px-2" style="font-size: 1.5rem; color: cornflowerblue;"></i>"Quote"
                                 </span>
                                 <span class="date ms-auto text-muted fs-9">Redigert: ${message.updatedAt.split("T")[0] + " " + message.updatedAt.split("T")[1].split(".")[0]}</span>
-                                </div>
+                            </div>
+                            <hr class="mt-1 mb-2">
+                                <div class="commentField input-group mb-1 px-3">
+                                    <input type="text" class="form-control" name="commentField" placeholder="Kommentar...">
+                                    <button class="btn btn-primary postComment" type="button">
+                                    <i class="bi bi-send-fill" style="color:white;"></i>
+                                    </button>
+                            </div>
                         </div>
                     </div>
                 </div>
-          </div>`
-        );
-    });
+                <div class="children d-flex flex-column align-items-end">
+                ${message.comments.map((c) => {
+                return `
+                    <div data-id="" class="child mt-2 mb-2">
+                        <div class="card d-flex flex-row align-items-center">
+                            <div class="cardAuthor px-3 border-end">
+                                ${c.user}
+                            </div>
+                            <div class="card-body border-end">
+                                ${c.comment}
+                            </div>
+                            <div class="card-actions">
+                                <div class="delete mt-1">
+                                    <i class="bi bi-trash3 px-1" style="font-size: 1.2rem; color: cornflowerblue;"></i>   
+                                </div>
+                            </div>
+                        </div>
+                </div>`
+                }).join("")}
+                </div>
+          </div>`; 
+    }).join("");
+    $(".messages").append(messages);
 }
 //create a new post 
 export const createPost = (data) => {
@@ -99,6 +122,18 @@ export const deletePost = (id) => {
     $.ajax({
         url: `/posts/${id}`,
         method: "DELETE",
+        success: function (data) {
+            console.log(data);
+        },
+    });
+}
+
+//comment post post
+export const commentPost = (id, data) => {
+    $.ajax({
+        url: `/posts/comment/${id}`,
+        method: "PATCH",
+        data: data,
         success: function (data) {
             console.log(data);
         },

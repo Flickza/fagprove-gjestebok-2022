@@ -46,10 +46,34 @@ export const updatePost = (req, res) => {
     const id = req.params.id;
     const title = req.body.title;
     const body = req.body.body;
-
-    console.log(id, title, body);
     //update model with variables from form post
     PostMessage.findByIdAndUpdate(id, { $set: { title: title, body: body, updatedAt: new Date() } }, { new: true }, (err, post) => {
+        if (err) {
+            res.json(err);
+        }
+        res.json(post);
+    });
+}
+
+export const commentPost = (req, res) => {
+    //id of post to be commented
+    const id = req.params.id;
+
+    //user who commented
+    const userId = "testuser";
+    //get variables from form post
+    const comment = req.body.commentField;
+
+    //update model with variables from form post
+    PostMessage.findByIdAndUpdate(id, {
+        $push: {
+            comments: {
+                user: "testuser",
+                comment: comment,
+                createdAt: new Date()
+            }
+        }
+    }, { new: true }, (err, post) => {
         if (err) {
             res.json(err);
         }

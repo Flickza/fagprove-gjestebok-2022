@@ -1,4 +1,4 @@
-import { deletePost, renderFetch } from "/js/Post.js";
+import { deletePost, renderFetch, commentPost } from "/js/Post.js";
 import { handleFormState, handleFormSubmit } from "/js/Form.js";
 
 await renderFetch();
@@ -18,6 +18,27 @@ $(document.body).on("click", "div.edit", (e) => {
     handleFormState("UPDATE");
 });
 
+//comment post handler
+$(document.body).on("click", "button.postComment", async (e) => {
+    //get the parent div of the post
+    const post = $(e.currentTarget).parents().eq(4);
+
+    //get commentText
+    const commentField = post.find("input[name='commentField']");
+    if (commentField.val().length < 10) return;
+
+    //extract data-id from the parent div
+    const postId = post.attr("data-id");
+    
+    //get comment text
+    const comment = commentField.serialize();
+
+    await commentPost(postId, comment);
+    alert("Commented!");
+    commentField.trigger("reset");
+    await renderFetch();
+})
+
 //delete post handler
 $(document.body).on("click", "div.delete", async (e) => {
     const post = $(e.target).parents().eq(4);
@@ -29,7 +50,7 @@ $(document.body).on("click", "div.delete", async (e) => {
 });
 
 //form submit handler
-$(document.body).on("submit","form#Post", async (e) => {
+$(document.body).on("submit", "form#Post", async (e) => {
     e.preventDefault();
 
     //get state of Form
