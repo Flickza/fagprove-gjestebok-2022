@@ -1,4 +1,5 @@
 import express from 'express';
+import passport from 'passport';
 
 import { authScreen, googleAuth, googleAuthCallback } from '../controllers/auth.js';
 import { localLoginScreen, localLoginAuth, localNewUserScreen, localNewUser, logout } from '../controllers/user.js';
@@ -11,7 +12,7 @@ router.get('/', authScreen);
 
 //local auth
 router.get('/login', localLoginScreen);
-router.post('/login', localLoginAuth);
+router.post('/login', passport.authenticate('local'), localLoginAuth);
 
 //local registration
 router.get('/register', localNewUserScreen);

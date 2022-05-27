@@ -10,6 +10,7 @@ $(document).ready(function () {
             data: formData,
             success: function (data) {
                 if (data.success) {
+                    console.log(data);
                     redirectLogin();
                 } else {
                     const errorMessage = data;
@@ -19,8 +20,7 @@ $(document).ready(function () {
             }
         })
     });
-
-
+    //redirect user after successful login
     const redirectLogin = () => {
         //disable form fields and buttons
         $("#login-form").find("input, button").attr("disabled", true);
