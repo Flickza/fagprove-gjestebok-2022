@@ -31,12 +31,19 @@ export const localNewUser = (req, res) => {
 
         const salt = saltHash.salt;
         const hash = saltHash.hash;
-        
-        const Users = new User({ email: req.body.email, username: req.body.email.split("@")[0], source: "local", hash: hash, salt: salt });
+
+        const Users = new User({
+            email: req.body.email,
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            source: "local",
+            hash: hash,
+            salt: salt
+        });
 
         Users.save((err, user) => {
             if (err) return res.json({ message: err.message });
-            res.json({ message: "User created!", user: user });
+            res.json({ success: true, message: "User created!", user: user });
         });
     } catch (error) {
         res.json({ message: error });

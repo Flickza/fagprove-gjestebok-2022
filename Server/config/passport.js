@@ -12,10 +12,10 @@ const verifyCallback = (email, password, done) => {
     User.findOne({ email: email }, function (err, user) {
         console.log(user);
         if (err) {
-            return cb(err);
+            return done(err);
         }
         if (!user) {
-            return cb(null, false, { message: 'Incorrect email or password.' });
+            return done(null, false, { message: 'Incorrect email or password.' });
         }
         const isValid = validPassword(password, user.hash, user.salt);
 

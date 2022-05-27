@@ -3,13 +3,16 @@ import { handleFormState, handleFormSubmit } from "./Form.js";
 
 await renderFetch();
 
+if (user) {
+    console.log(user);
+}
 //edit post handler
 $(document.body).on("click", "div.edit", (e) => {
     //get parent parent element of post
     const post = $(e.target).parents().eq(4);
     //state variable
     const state = "UPDATE";
-    
+
     const postId = post.attr("data-id");
     const title = post.find(".cardContent .title").text();
     const body = post.find(".cardContent .body").text();
@@ -25,6 +28,7 @@ $(document.body).on("click", "div.edit", (e) => {
     //handle form state
     handleFormState(state);
 });
+
 
 //comment post handler
 $(document.body).on("click", "button.postComment", async (e) => {
@@ -43,10 +47,10 @@ $(document.body).on("click", "button.postComment", async (e) => {
 
     //Comment post
     await commentPost(postId, comment);
-    
+
     //reset field
     commentField.trigger("reset");
-    
+
     //re-render posts
     await renderFetch();
 })
@@ -85,7 +89,7 @@ $(document.body).on("reset", "form#Post", () => {
     //set state back to create and id to empty
     $("form#Post").attr("state", defaultState);
     $("form#Post").attr("data-id", "null");
-    
+
     handleFormState(defaultState);
 });
 

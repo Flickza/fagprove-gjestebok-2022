@@ -18,13 +18,14 @@ export const handleFormState = (state) => {
     }
 };
 
-export const handleFormSubmit = async (state, data, id) => {
+
+export const handleFormSubmit = (state, data, id) => {
     console.log(state, data, id);
     switch (state) {
         case "CREATE":
             //create new Post
             try {
-                await createPost(data);
+                createPost(data);
             } catch (error) {
                 alert(error);
             }
@@ -34,7 +35,7 @@ export const handleFormSubmit = async (state, data, id) => {
             //update post
             try {
                 if (id != undefined) {
-                    await updatePost(data, id);
+                    updatePost(data, id);
                 }
             } catch (error) {
                 alert(error);

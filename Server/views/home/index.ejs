@@ -14,6 +14,9 @@
     <title>Hjem</title>
   </head>
   <body>
+      <script>
+        var user = '<%- JSON.stringify(user) %>';
+      </script>
     <div class="main">
       <!-- Navbar -->
       <nav
@@ -24,11 +27,11 @@
             <ul class="navbar-nav mb-2 mb-lg-0">
               <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="#">
-                  <% if (user) { %>
-                     <%= user.email %> 
+                  <% if (user) { %> 
+                    <%= user.email %>
                      <% } else { %>
-                      iSnapBook
-                  <% } %>
+                       iSnapBook
+                    <% } %>
                 </a>
               </li>
             </ul>
@@ -40,10 +43,17 @@
             <ul class="navbar-nav mb-2 mb-lg-0">
               <li class="nav-item">
                 <% if(!user) { %>
-                <a class="nav-link active" aria-current="page" href="/auth">Innlogging</a>
-              <% } else { %>
-                <a class="nav-link active" aria-current="page" href="/auth/logout">Logg ut</a>
-              <% } %>
+                <a class="nav-link active" aria-current="page" href="/auth"
+                  >Innlogging</a
+                >
+                <% } else { %>
+                <a
+                  class="nav-link active"
+                  aria-current="page"
+                  href="/auth/logout"
+                  >Logg ut</a
+                >
+                <% } %>
               </li>
             </ul>
           </div>

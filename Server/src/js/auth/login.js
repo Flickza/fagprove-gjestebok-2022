@@ -9,19 +9,21 @@ $(document).ready(function () {
             method: 'POST',
             data: formData,
             success: function (data) {
-                if (data.success) {
-                    console.log(data);
+                if (data.success === true) {
                     redirectLogin();
                 } else {
-                    const errorMessage = data;
+                    const errorMessage = data.message;
                     $(".errorText").html(errorMessage);
-                    $(".errorMessage").attr("visible");
+                    $(".errorMessage").attr("hidden", false);
                 }
             }
         })
     });
     //redirect user after successful login
     const redirectLogin = () => {
+        //hide error message if there was any
+        $(".errorMessage").attr("hidden", true);
+
         //disable form fields and buttons
         $("#login-form").find("input, button").attr("disabled", true);
 
