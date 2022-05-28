@@ -14,68 +14,36 @@
     <title>Hjem</title>
   </head>
   <body>
-    <div class="main">
+    <div class="main" style="height:100%;">
       <!-- Navbar -->
-      <nav
-        class="navbar navbar-dark bg-dark navbar-expand-lg fixed-top fw-bold"
-      >
-        <div class="container-fluid">
-          <div class="collapse navbar-collapse d-flex justify-content-between">
-            <ul class="navbar-nav mb-2 mb-lg-0">
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">
-                  <% if (user) { %> 
-                    <%= user.email %>
-                     <% } else { %>
-                       iSnapBook
-                    <% } %>
-                </a>
-              </li>
-            </ul>
-            <ul class="navbar-nav mb-2 mb-lg-0">
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="/">Home</a>
-              </li>
-            </ul>
-            <ul class="navbar-nav mb-2 mb-lg-0">
-              <li class="nav-item">
-                <% if(!user) { %>
-                <a class="nav-link active" aria-current="page" href="/auth"
-                  >Innlogging</a
-                >
-                <% } else { %>
-                <a
-                  class="nav-link active"
-                  aria-current="page"
-                  href="/auth/logout"
-                  >Logg ut</a
-                >
-                <% } %>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
+      <%- include('../templates/navigation.ejs'); %>
       <!-- End of Navbar -->
+
       <!-- Start of messages and form container -->
       <div class="container-fluid mt-5">
+
         <div class="row px-3 d-flex flex-row flex-md-row flex-column-reverse">
+
           <!-- Messages column -->
-          <div class="col-sm-12 col-md-8 mt-1 border-end border-2">
+          <div class="col-sm-12 col-md-8 mt-1 border-end border-2 leftCol">
+
             <!-- Start of pagination -->
             <div class="pagination d-flex flex-row align-items-center justify-content-center mt-3">
               <nav id="pagination" aria-label="Page navigation">
               </nav>
             </div>
+
             <!-- End of pagination -->
             <div data-currentPage="1" class="messages d-flex flex-column align-items-center mt-2 mb-5">
               <!-- Messages -->
+
               <!-- End of Messages -->
             </div>
           </div>
           <!-- End of Messages column -->
+
           <!-- Form column -->
-          <div class="col-sm-12 col-md-4 mt-1 bg-light">
+          <div class="col-sm-12 col-md-4 mt-1 bg-light rightCol">
             <%- include('../templates/postForm.ejs'); %>
           </div>
           <!-- End of Form column -->

@@ -1,7 +1,6 @@
 import { createPost, updatePost } from "./Post.js";
 
 export const handleFormState = (state) => {
-    console.log(state);
     switch (state) {
         case "CREATE":
             //set create title text
@@ -20,7 +19,6 @@ export const handleFormState = (state) => {
 
 
 export const handleFormSubmit = (state, data, id) => {
-    console.log(state, data, id);
     switch (state) {
         case "CREATE":
             //create new Post

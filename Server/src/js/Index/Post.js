@@ -73,7 +73,7 @@ export const renderPosts = (posts, currentPage) => {
                                 <div class="commentField d-flex d-inline mb-1 mt-2 px-3">
                                     <div class="input-group">
                                         <input type="text" class="form-control" maxLength="50" name="commentField" placeholder="Kommentar... (Maks 50 Karakterer)">
-                                        <button class="btn btn-primary postComment" type="button">
+                                        <button type="submit" class="btn btn-primary postComment" type="button">
                                         <i class="bi bi-send-fill" style="color:white;"></i>
                                         </button>
                                     </div>

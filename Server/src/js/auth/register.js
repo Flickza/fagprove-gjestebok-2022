@@ -4,7 +4,6 @@ $(document).ready(function () {
         e.preventDefault();
         let form = $(this);
         let formData = form.serialize();
-        console.log(formData);
         $.ajax({
             url: '/auth/register',
             method: 'POST',

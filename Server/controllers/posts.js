@@ -14,9 +14,7 @@ export const getPosts = (req, res) => {
     });
 }
 export const createPost = (req, res) => {
-    
-    console.log(req.user);
-    //get variables from form post
+        //get variables from form post
     const user = req.user.id;
     const username = req.user.username;
     const title = req.body.title;

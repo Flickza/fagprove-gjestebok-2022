@@ -7,6 +7,19 @@
   margin: 0;
 }
 
+html {
+  height: 100%;
+}
+
+body {
+  min-height: 95%;
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}
+
+
 .cardAuthor {
   width: 150px;
   height: auto;

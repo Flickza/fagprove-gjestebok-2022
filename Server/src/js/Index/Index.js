@@ -43,7 +43,9 @@ $(document.body).on("click", "button.postComment", async (e) => {
 
     //Get commentText
     const commentField = post.find("input[name='commentField']");
-    if (commentField.val().length > 50) return;
+
+    //if commentText is length is over 50, return
+    if (commentField.val().length > 50 || commentField.val().length < 1) return;
 
     //Extract data-id from the parent div
     const postId = post.attr("data-id");
