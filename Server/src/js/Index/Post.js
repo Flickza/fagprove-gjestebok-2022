@@ -16,7 +16,12 @@ export const fetchPosts = () => {
 };
 
 //generate html markup for posts
-export const renderPosts = async (posts, currentPage, requestFrom) => {
+export const renderPosts = async (data, currentPage) => {
+    //break response data into variables
+    const posts = data.posts;
+    const requestFrom = data.requestFrom;
+    const isAdmin = data.isAdmin;
+    
     //if there are no posts, run pagination logic with null parameters.
     //null parameter will remove pagination html
     if (!posts.length > 0) {
@@ -37,7 +42,7 @@ export const renderPosts = async (posts, currentPage, requestFrom) => {
     //generate html markup for posts using ejs template
     const html = await $.get("/templates/post.ejs").then(function (file, status, xhr) {
         var htmlMarkup = ``;
-        postsToRender.forEach(post => htmlMarkup += ejs.render(file, { post: post, requestFrom: requestFrom }));
+        postsToRender.forEach(post => htmlMarkup += ejs.render(file, { post: post, requestFrom: requestFrom, isAdmin: isAdmin }));
         return htmlMarkup;
     });
 
@@ -62,7 +67,7 @@ export const renderFetch = async (pagenum) => {
     await fetchPosts().then(async function (data) {
 
         //when data renderposts is called, it returns html markup
-        const html = await renderPosts(data.posts, pagenum, data.requestFrom);
+        const html = await renderPosts(data, pagenum);
 
         //append html markup to messages div
         $(".messages").html(html);

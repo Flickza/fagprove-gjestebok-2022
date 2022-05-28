@@ -20,13 +20,13 @@ export const localLoginAuth = (req, res) => {
     try {
         res.json({ success: true, message: "You have been logged in!" })
     } catch (error) {
-        res.json({ message: error.message });
+        res.json({ success: false, message: error });
     }
 }
 
 export const localNewUser = (req, res) => {
     try {
-        if (req.body.password !== req.body.repeatPassword) return res.json({ message: "Passwords dont match!" });
+        if (req.body.password !== req.body.repeatPassword) return res.json({ success: false, message: "Passwords dont match!" });
         const saltHash = genPassword(req.body.password);
 
         const salt = saltHash.salt;
@@ -43,11 +43,11 @@ export const localNewUser = (req, res) => {
         });
 
         Users.save((err, user) => {
-            if (err) return res.json({ message: err.message });
+            if (err) return res.json({ success: false, message: err });
             res.json({ success: true, message: "User created!", user: user });
         });
     } catch (error) {
-        res.json({ message: error });
+        res.json({ success: false, message: error });
     }
 }
 

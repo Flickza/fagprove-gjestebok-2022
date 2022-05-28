@@ -17,7 +17,7 @@
       </div>
       <!-- check if the user who requested the posts own this post -->
       <!-- if the user owns the post display delete and edit actions of the post -->
-      <% if(requestFrom != null && post.userId === requestFrom) { %>
+      <% if(requestFrom != null && post.userId === requestFrom || isAdmin) { %>
       <div class="userActions d-flex flex-row mt-2">
         <div class="edit mt-1">
           <i
@@ -50,30 +50,24 @@
             >Redigert: <%= post.updatedAt %></span
           >
         </div>
-        <div class="commentField d-flex d-inline mb-1 mt-2 px-3">
-          <div class="input-group">
-            <input
-              type="text"
-              class="form-control"
-              maxLength="50"
-              name="commentField"
-              placeholder="Kommentar... (Maks 50 Karakterer)"
-            />
-            <button
-              type="submit"
-              class="btn btn-primary postComment"
-              type="button"
-            >
-              <i class="bi bi-send-fill" style="color: white"></i>
-            </button>
+        <!-- check if request was made from a logged in user -->
+        <!-- if user is not logged in, hide comment field -->
+        <% if(requestFrom !== null) { %>
+          <div class="commentField d-flex d-inline mb-1 mt-2 px-3">
+            <div class="input-group">
+              <input type="text" class="form-control" maxLength="50" name="commentField" placeholder="Kommentar... (Maks 50 Karakterer)"/>
+              <button type="submit" class="btn btn-primary postComment" type="button">
+                <i class="bi bi-send-fill" style="color: white"></i>
+              </button>
+            </div>
+            <span class="quote text-end mt-1">
+              <i
+                class="bi bi-chat-square-quote px-2"
+                style="font-size: 1.5rem; color: cornflowerblue"
+              ></i>
+            </span>
           </div>
-          <span class="quote text-end mt-1">
-            <i
-              class="bi bi-chat-square-quote px-2"
-              style="font-size: 1.5rem; color: cornflowerblue"
-            ></i>
-          </span>
-        </div>
+        <% } %>
       </div>
     </div>
   </div>
@@ -87,7 +81,7 @@
         <div class="card-body"><%= c.comment %></div>
       <!-- check if the user who requested the posts own this comment -->
       <!-- if the user owns the comment display delete the comment -->
-        <% if(requestFrom != null && c.userId === requestFrom) { %>
+        <% if(requestFrom != null && c.userId === requestFrom || isAdmin) { %>
         <div class="card-actions border-start">
           <div class="deleteComment mt-1">
             <i
