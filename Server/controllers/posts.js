@@ -14,14 +14,18 @@ export const getPosts = (req, res) => {
     });
 }
 export const createPost = (req, res) => {
+    
+    console.log(req.user);
     //get variables from form post
-    const user = "testuser";
+    const user = req.user.id;
+    const username = req.user.username;
     const title = req.body.title;
     const body = req.body.body;
 
     //create a new model with variables from form post
     const Post = new PostMessage({
         user: user,
+        username: username,
         title: title,
         body: body,
         createdAt: new Date()
@@ -33,8 +37,8 @@ export const createPost = (req, res) => {
             if (err) {
                 console.log(err);
             }
-            console.log(post);
             res.json(post);
+
         });
         //catch error if any
     } catch (error) {
@@ -61,7 +65,8 @@ export const commentPost = (req, res) => {
     const id = req.params.id;
 
     //user who commented
-    const userId = "testuser";
+    const userId = req.user.id;
+    const authorName = req.user.username;
     //get variables from form post
     const comment = req.body.commentField;
 
@@ -71,6 +76,7 @@ export const commentPost = (req, res) => {
             comments: {
                 _id: new mongoose.Types.ObjectId(),
                 user: userId,
+                authorName: authorName,
                 comment: comment,
                 createdAt: new Date()
             }
@@ -85,28 +91,65 @@ export const commentPost = (req, res) => {
 
 export const deletePost = (req, res) => {
     //get variables from form post
-    const id = req.params.id;
+    const postId = req.params.id;
+    const userId = req.user.id;
+
     //delete model with variables from form post
-    PostMessage.findByIdAndDelete(id, (err, post) => {
+    PostMessage.findOne({ _id: postId }, (err, post) => {
         if (err) {
-            res.json(err);
+            res.json({ success: false, message: "Could not find post. Please try again." });
         }
-        res.json(post);
-    });
-}
+        if (post.user === userId) {
+            PostMessage.findByIdAndDelete(postId, (err, post) => {
+                if (err) {
+                    res.json({ success: false, message: "Could not find post. Please try again." });
+                }
+                res.json(post);
+            });
+        } else {
+            res.json({ success: false, message: "You are not authorized to delete this post" });
+        }
+    })
+};
 
 export const deleteComment = (req, res) => {
+    //get user who requested delete
+    const userId = req.user.id;
+
     //get variables from form post
     const postId = req.params.postId;
     const commentId = req.params.commentId;
 
-    //delete object from posts array with comment of id
-    PostMessage.findByIdAndUpdate(postId,
-        { $pull: { comments: { _id: mongoose.Types.ObjectId(commentId) } } },
-        (err, post) => {
-            if (err) {
-                res.json(err);
+    //get parent post that contains comment with id (commentId)
+    PostMessage.findOne({
+        _id: postId,
+        comment: {
+            $match: {
+                _id: mongoose.Types.ObjectId(commentId),
+                user: userId
             }
-            res.json(post);
-        });
+        }
+    }, (err, post) => {
+        if (err) res.json(err);
+
+        if (post.length < 1) return res.json({ success: false, message: "Could not find comment. Please try again." });
+        //get comment with commentId
+        const comment = post.comments.filter((c) => c._id.toString() === commentId);
+
+        //check if user is authorized to delete comment (user id from session matches user id from comment)
+        if (comment[0].user === userId) {
+            PostMessage.findByIdAndUpdate(postId,
+                { $pull: { comments: { _id: mongoose.Types.ObjectId(commentId) } } },
+                (err, post) => {
+                    //if error, send error message
+                    if (err) {
+                        res.json({ success: false, message: "Something Went wrong. Try again later..." });
+                    }
+                    res.json({ success: true, message: "Comment deleted." });
+                });
+        } else {
+            res.json({ success: false, message: "You are not authorized to delete this comment" });
+        }
+    })
+
 }

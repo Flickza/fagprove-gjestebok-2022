@@ -14,9 +14,6 @@
     <title>Hjem</title>
   </head>
   <body>
-      <script>
-        var user = '<%- JSON.stringify(user) %>';
-      </script>
     <div class="main">
       <!-- Navbar -->
       <nav
@@ -62,81 +59,24 @@
       <!-- End of Navbar -->
       <!-- Start of messages and form container -->
       <div class="container-fluid mt-5">
-        <div class="row px-3 d-flex flex-lg-row flex-sm-row-reverse">
+        <div class="row px-3 d-flex flex-row flex-md-row flex-column-reverse">
           <!-- Messages column -->
-          <div class="col-sm-12 col-md-8 mt-1 bg-light border-end border-2">
-            <div
-              class="messages d-flex flex-column align-items-center mt-5 mb-5"
-            >
-              <!-- Messages -->
-              <!-- End of Messages -->
-            </div>
+          <div class="col-sm-12 col-md-8 mt-1 border-end border-2">
             <!-- Start of pagination -->
-            <div
-              class="pagination d-flex flex-row align-items-center justify-content-center"
-            >
-              <nav aria-label="Page navigation example">
-                <ul class="pagination">
-                  <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Previous">
-                      <span aria-hidden="true">&laquo;</span>
-                    </a>
-                  </li>
-                  <li class="page-item"><a class="page-link" href="#">1</a></li>
-                  <li class="page-item"><a class="page-link" href="#">2</a></li>
-                  <li class="page-item"><a class="page-link" href="#">3</a></li>
-                  <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Next">
-                      <span aria-hidden="true">&raquo;</span>
-                    </a>
-                  </li>
-                </ul>
+            <div class="pagination d-flex flex-row align-items-center justify-content-center mt-3">
+              <nav id="pagination" aria-label="Page navigation">
               </nav>
             </div>
             <!-- End of pagination -->
+            <div data-currentPage="1" class="messages d-flex flex-column align-items-center mt-2 mb-5">
+              <!-- Messages -->
+              <!-- End of Messages -->
+            </div>
           </div>
           <!-- End of Messages column -->
           <!-- Form column -->
           <div class="col-sm-12 col-md-4 mt-1 bg-light">
-            <div class="postForm mt-5">
-              <div class="card border border-1 px-4">
-                <h3 class="formTitle text-center mt-3">Nytt Innlegg</h3>
-                <hr class="mb-2" />
-                <form id="Post" state="CREATE">
-                  <div class="mb-3">
-                    <label class="form-label">Tittel</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      name="title"
-                      placeholder="Tittel... (Maks 100 Karakterer)"
-                      maxlength="100"
-                      required
-                    />
-                  </div>
-                  <div class="mb-3">
-                    <label class="form-label">Melding</label>
-                    <textarea
-                      class="form-control"
-                      rows="4"
-                      name="body"
-                      placeholder="Skriv en melding... (Maks 280 Karakterer)"
-                      maxlength="280"
-                      required
-                    ></textarea>
-                  </div>
-                  <div class="mb-3 d-flex justify-content-end">
-                    <button
-                      id="submitMessage"
-                      type="submit"
-                      class="btn btn-primary"
-                    >
-                      Post
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </div>
+            <%- include('../templates/postForm.ejs'); %>
           </div>
           <!-- End of Form column -->
         </div>

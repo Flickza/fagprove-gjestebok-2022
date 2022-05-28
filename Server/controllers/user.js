@@ -34,6 +34,7 @@ export const localNewUser = (req, res) => {
 
         const Users = new User({
             email: req.body.email,
+            username: req.body.email.split("@")[0],
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             source: "local",

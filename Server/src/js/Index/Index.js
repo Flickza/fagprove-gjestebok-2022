@@ -1,11 +1,18 @@
 import { deletePost, renderFetch, commentPost, deleteComment } from "./Post.js";
 import { handleFormState, handleFormSubmit } from "./Form.js";
 
-await renderFetch();
+let currentPage = $(".messages").attr("data-currentpage");
 
-if (user) {
-    console.log(user);
-}
+await renderFetch(currentPage);
+
+
+//pagination page number click handler
+$(document.body).on('click', ".page-item.page a", (e) => {
+    let pageNumber = $(e.currentTarget).attr("data-pagenum");
+    currentPage = pageNumber;
+    renderFetch(pageNumber);
+});
+
 //edit post handler
 $(document.body).on("click", "div.edit", (e) => {
     //get parent parent element of post
@@ -29,11 +36,10 @@ $(document.body).on("click", "div.edit", (e) => {
     handleFormState(state);
 });
 
-
 //comment post handler
 $(document.body).on("click", "button.postComment", async (e) => {
     //Get the parent div of the post
-    const post = $(e.currentTarget).parents().eq(4);
+    const post = $(e.currentTarget).parents().eq(5);
 
     //Get commentText
     const commentField = post.find("input[name='commentField']");
@@ -46,13 +52,13 @@ $(document.body).on("click", "button.postComment", async (e) => {
     const comment = commentField.serialize();
 
     //Comment post
-    await commentPost(postId, comment);
+    commentPost(postId, comment);
 
     //reset field
     commentField.trigger("reset");
 
     //re-render posts
-    await renderFetch();
+    await renderFetch(currentPage);
 })
 
 //delete post handler
@@ -60,8 +66,8 @@ $(document.body).on("click", "div.delete", async (e) => {
     const post = $(e.currentTarget).parents().eq(3);
     const postId = post.attr("data-id");
 
-    await deletePost(postId);
-    await renderFetch();
+    deletePost(postId);
+    await renderFetch(currentPage);
 });
 
 //delete comment handler
@@ -77,10 +83,10 @@ $(document.body).on("click", "div.deleteComment", async (e) => {
     const commentId = comment.attr("data-id");
 
     //delete comment
-    await deleteComment(postId, commentId);
+    deleteComment(postId, commentId);
 
     //render updated posts
-    await renderFetch();
+    await renderFetch(currentPage);
 });
 
 //form reset handler
@@ -105,12 +111,12 @@ $(document.body).on("submit", "form#Post", async (e) => {
     const data = $("form#Post").serialize();
 
     //handle submit
-    await handleFormSubmit(formState, data, formId);
+    handleFormSubmit(formState, data, formId);
 
     //reset form
     $("form#Post").trigger("reset");
 
     //render updated posts
-    await renderFetch();
+    await renderFetch(currentPage);
 });
 

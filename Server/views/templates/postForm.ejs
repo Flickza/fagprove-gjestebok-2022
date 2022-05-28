@@ -1,0 +1,41 @@
+<div class="postForm mt-5 px-5">
+  <div class="card border border-1 px-4 shadow-sm">
+    <h3 class="formTitle text-center mt-3">Nytt Innlegg</h3>
+    <hr class="mb-2" />
+    <% if(user) { %>
+    <form id="Post" state="CREATE">
+      <div class="mb-3">
+        <label class="form-label">Tittel</label>
+        <input
+          type="text"
+          class="form-control"
+          name="title"
+          placeholder="Tittel... (Maks 100 Karakterer)"
+          maxlength="100"
+          required
+        />
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Melding</label>
+        <textarea
+          class="form-control"
+          rows="4"
+          name="body"
+          placeholder="Skriv en melding... (Maks 280 Karakterer)"
+          maxlength="280"
+          required
+        ></textarea>
+      </div>
+      <div class="mb-3 d-flex justify-content-end">
+        <button id="submitMessage" type="submit" class="btn btn-primary">
+          Post
+        </button>
+        <%} else {%>
+        <h3 class="text-center">
+          <a href="/auth/">Logg inn</a> for å poste
+        </h3>
+        <%}%>
+      </div>
+    </form>
+  </div>
+</div>

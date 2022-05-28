@@ -37,11 +37,11 @@ $(document).ready(function () {
         //change text of login button
         $(".btn-login").html(`
         <i class="bi bi-check-circle px-1" style="font-size: 1.5rem; font-weight: bold;"></i>
-        <span class="fw-bold">Du blir nå logget inn!</span>`);
+        <span class="fw-bold">Du er registrert!</span>`);
 
         setTimeout(function () {
-            window.location.href = '/';
-        }, 5000);
+            window.location.href = '/auth/login';
+        }, 3000);
     }
 
 

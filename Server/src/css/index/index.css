@@ -7,33 +7,42 @@
   margin: 0;
 }
 
+.cardAuthor {
+  width: 150px;
+  height: auto;
+}
 .message {
   width: 80%;
-  overflow:hidden;
+  overflow: hidden;
 }
 
 .cardContent {
   width: 100%;
 }
 .cardBody {
-  height:120px;
+  height: 120px;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .childCardBody {
-  height:60px;
+  height: 60px;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .children {
   width: 100%;
-}
-.child {
-  width: 75%;
+  max-height: 125px;
+  overflow-y: scroll;
 }
 
+.children::-webkit-scrollbar {
+  display: none;
+}
+.child {
+  width: 95%;
+}
 
 hr {
   border: none;
