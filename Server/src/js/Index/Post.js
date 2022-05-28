@@ -16,20 +16,19 @@ export const fetchPosts = () => {
 };
 
 //generate html markup for posts
-export const renderPosts = async (posts, currentPage, done) => {
+export const renderPosts = async (posts, currentPage, requestFrom) => {
     //if there are no posts, run pagination logic with null parameters.
     //null parameter will remove pagination html
     if (!posts.length > 0) {
         paginationLogic(null)
         return "There are no posts :(";
-
     }
     //limit of posts per page
     const limit = 2;
 
     //set currentpage in data attribute of messages parent div
     $(".messages").attr("data-currentpage", currentPage);
-    
+
     //send current page and array of posts for pagination
     //paginationLogic calculates what posts to render given the currentPage
     //returns an array of posts
@@ -38,7 +37,7 @@ export const renderPosts = async (posts, currentPage, done) => {
     //generate html markup for posts using ejs template
     const html = await $.get("/templates/post.ejs").then(function (file, status, xhr) {
         var htmlMarkup = ``;
-        postsToRender.forEach(post => htmlMarkup += ejs.render(file, post));
+        postsToRender.forEach(post => htmlMarkup += ejs.render(file, { post: post, requestFrom: requestFrom }));
         return htmlMarkup;
     });
 
@@ -61,10 +60,10 @@ export const createPost = (data) => {
 export const renderFetch = async (pagenum) => {
     //fetch all posts
     await fetchPosts().then(async function (data) {
-        
+
         //when data renderposts is called, it returns html markup
-        const html = await renderPosts(data, pagenum);
-        
+        const html = await renderPosts(data.posts, pagenum, data.requestFrom);
+
         //append html markup to messages div
         $(".messages").html(html);
     });

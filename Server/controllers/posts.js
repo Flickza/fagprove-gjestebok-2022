@@ -3,6 +3,10 @@ import PostMessage from '../models/Post.js';
 import mongoose from 'mongoose';
 
 export const getPosts = (req, res) => {
+    //id of user who requested posts
+    let userId = null;
+    if(req.user) userId = req.user._id;
+
     //find all posts of Model
     PostMessage.find({}, (err, posts) => {
         if (err) {
@@ -10,19 +14,20 @@ export const getPosts = (req, res) => {
             res.send(err);
         }
         //respond with all model data
-        res.json(posts);
-    });
+        res.json({ posts: posts, requestFrom: userId });
+    }).sort({ createdAt: 'desc' });
 }
+
 export const createPost = (req, res) => {
-        //get variables from form post
-    const user = req.user.id;
+    //get variables from form post
+    const userId = req.user.id;
     const username = req.user.username;
     const title = req.body.title;
     const body = req.body.body;
 
     //create a new model with variables from form post
     const Post = new PostMessage({
-        user: user,
+        userId: userId,
         username: username,
         title: title,
         body: body,
@@ -73,7 +78,7 @@ export const commentPost = (req, res) => {
         $push: {
             comments: {
                 _id: new mongoose.Types.ObjectId(),
-                user: userId,
+                userId: userId,
                 authorName: authorName,
                 comment: comment,
                 createdAt: new Date()
@@ -124,18 +129,21 @@ export const deleteComment = (req, res) => {
         comment: {
             $match: {
                 _id: mongoose.Types.ObjectId(commentId),
-                user: userId
+                userId: userId
             }
         }
     }, (err, post) => {
         if (err) res.json(err);
 
+        //check if there are any posts
         if (post.length < 1) return res.json({ success: false, message: "Could not find comment. Please try again." });
-        //get comment with commentId
+
+        //get filter comments of retrieved posts to get the post that contains comment with id (commentId)
         const comment = post.comments.filter((c) => c._id.toString() === commentId);
 
         //check if user is authorized to delete comment (user id from session matches user id from comment)
-        if (comment[0].user === userId) {
+        //if user is authorized, delete the comment
+        if (comment[0].userId === userId) {
             PostMessage.findByIdAndUpdate(postId,
                 { $pull: { comments: { _id: mongoose.Types.ObjectId(commentId) } } },
                 (err, post) => {

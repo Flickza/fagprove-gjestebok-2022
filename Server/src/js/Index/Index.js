@@ -1,6 +1,7 @@
 import { deletePost, renderFetch, commentPost, deleteComment } from "./Post.js";
 import { handleFormState, handleFormSubmit } from "./Form.js";
 
+//get current page of posts
 let currentPage = $(".messages").attr("data-currentpage");
 
 await renderFetch(currentPage);

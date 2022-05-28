@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const Post = mongoose.Schema({
-    user:{
+    userId:{
         type: String,
         required: true  
     },
