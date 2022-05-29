@@ -2,192 +2,218 @@
 import PostMessage from '../models/Post.js';
 import mongoose from 'mongoose';
 
-export const getPosts = (req, res) => {
-    //id of user who requested posts
-    let userId = null;
+export const getPosts = (req, res, next) => {
+    try {
+        //id of user who requested posts
+        let userId = null;
 
-    //if user who request is admin or not
-    let isAdmin = false;
+        //if user who request is admin or not
+        let isAdmin = false;
 
-    //check if there is a user logged in making the request
-    if (req.user) {
-        userId = req.user._id;
-        isAdmin = req.user.admin;
-    }
-
-    //find all posts of Model
-    PostMessage.find({}, (err, posts) => {
-        if (err) {
-            //if error give error message
-            res.send({ success: false, message: err });
+        //check if there is a user logged in making the request
+        if (req.user) {
+            userId = req.user._id;
+            isAdmin = req.user.admin;
         }
-        //respond with all model data
-        res.json({ success: true, posts: posts, requestFrom: userId, isAdmin: isAdmin });
-    }).sort({ createdAt: 'desc' });
+
+        //find all posts of Model
+        PostMessage.find({}, (err, posts) => {
+            //forward to error handler
+            if (err) return next(err);
+
+            //respond with all model data
+            res.status(200).json({ success: true, posts: posts, requestFrom: userId, isAdmin: isAdmin });
+
+        }).sort({ createdAt: 'desc' });
+    } catch (error) {
+        //forward to error handler
+        return next({ statusCode: 500, message: error.message });
+    }
 }
 
-export const createPost = (req, res) => {
-    //get data of user who sent request
-    const userId = req.user.id;
-    const username = req.user.username;
-
-    //get variables from form post
-    const title = req.body.title;
-    const body = req.body.body;
-
-    //create a new model with variables from form post
-    const Post = new PostMessage({
-        userId: userId,
-        username: username,
-        title: title,
-        body: body,
-        createdAt: new Date()
-    });
-
+export const createPost = (req, res, next) => {
     //try saving to collection
     try {
-        Post.save((err, post) => {
-            if (err) {
-                res.json({ success: false, message: "Error saving post." });
-            }
-            res.json({ success: true, message: "New post created!" });
+        if (!req.body.title && !req.body.body) return next({ statusCode: 401, message: 'Title and Body are required' });
+        //get data of user who sent request
+        const userId = req.user.id;
+        const username = req.user.username;
+
+        //get variables from form post
+        const title = req.body.title;
+        const body = req.body.body;
+
+        //create a new model with variables from form post
+        const Post = new PostMessage({
+            userId: userId,
+            username: username,
+            title: title,
+            body: body,
+            createdAt: new Date()
         });
-        //catch error if any
+        Post.save((err, post) => {
+            //forward to error handler
+            if (err) return next(err);
+
+            res.status(201).json({ success: true, message: "New post created!" });
+        });
     } catch (error) {
-        res.json({ success: false, message: error });
+        //forward to error handler
+        return next({ statusCode: 500, message: error.message });
     }
 }
 
-export const updatePost = (req, res) => {
-    //get id of user who requested update
-    const userId = req.user.id;
-    //check if user is admin (true/false)
-    const isAdmin = req.user.admin;
+export const updatePost = (req, res, next) => {
+    try {
+        //get id of user who requested update
+        const userId = req.user.id;
+        //check if user is admin (true/false)
+        const isAdmin = req.user.admin;
 
-    //get variables from post request
-    const id = req.params.id;
-    const title = req.body.title;
-    const body = req.body.body;
+        //get variables from post request
+        const id = req.params.id;
+        const title = req.body.title;
+        const body = req.body.body;
 
-    //update model with variables from form post
-    PostMessage.findOne({ _id: id }, (err, post) => {
-        if (err) {
-            res.json(err);
-        }
-        //check if user who requested the update is the user who created the post or if user is admin
-        //update the post if user is authorized
-        if (post._id === userId || isAdmin) {
-            post.title = title;
-            post.body = body;
-            post.save().then(res.json({ success: true, message: "The post was edited successfully." }));
-        } else {
-            //respond with error message if user is not authorized
-            res.json({ success: false, message: "You are not authorized to update this port." });
-        }
-    });
-}
+        //update model with variables from form post
+        PostMessage.findOne({ _id: id }, (err, post) => {
+            //forward to error handler
+            if (err) return next(err);
+            if (!post) return next({ statusCode: 404, message: "Not Found" });
 
-export const commentPost = (req, res) => {
-    //id of post to be commented
-    const id = req.params.id;
-
-    //user who commented
-    const userId = req.user.id;
-    const authorName = req.user.username;
-    //get variables from form post
-    const comment = req.body.commentField;
-
-    //update model with variables from form post
-    PostMessage.findByIdAndUpdate(id, {
-        $push: {
-            comments: {
-                _id: new mongoose.Types.ObjectId(),
-                userId: userId,
-                authorName: authorName,
-                comment: comment,
-                createdAt: new Date()
+            //check if user who requested the update is the user who created the post or if user is admin
+            //update the post if user is authorized
+            if (post._id === userId || isAdmin) {
+                post.title = title;
+                post.body = body;
+                post.save().then(res.status(201).json({ success: true, message: "The post was edited successfully." }));
+            } else {
+                //respond with error message if user is not authorized
+                res.status(401).json({ success: false, message: "You are not authorized to update this port." });
             }
-        }
-    }, { new: true }, (err, post) => {
-        if (err) {
-            res.json(err);
-        }
-        res.json(post);
-    });
+        });
+    } catch (error) {
+        return next({ statusCode: 500, message: error.message });
+    }
 }
 
-export const deletePost = (req, res) => {
-    //get variables from form post
-    const postId = req.params.id;
+export const commentPost = (req, res, next) => {
+    try {
+        //id of post to be commented
+        const id = req.params.id;
 
-    //get id of user who requested DELETE
-    const userId = req.user.id;
+        //user who commented
+        const userId = req.user.id;
+        const authorName = req.user.username;
+        //get variables from form post
+        const comment = req.body.commentField;
 
-    //check if user is admin
-    const isAdmin = req.user.admin;
+        //update model with variables from form post
+        PostMessage.findOne({ _id: id }, (err, post) => {
 
-    //delete model with variables from form post
-    PostMessage.findOne({ _id: postId }, (err, post) => {
-        if (err) {
-            res.json({ success: false, message: "Could not find post. Please try again." });
-        }
-        if (post.user === userId || isAdmin) {
-            PostMessage.findByIdAndDelete(postId, (err, post) => {
-                if (err) {
-                    res.json({ success: false, message: "Could not find post. Please try again." });
+            //check if there are any posts, throw error if not found
+            if (!post) return next({ statusCode: 404, message: "Not Found" });
+
+            //update post with new comment
+            post.updateOne({
+                $push: {
+                    comments: {
+                        _id: new mongoose.Types.ObjectId(),
+                        userId: userId,
+                        authorName: authorName,
+                        comment: comment,
+                        createdAt: new Date()
+                    }
                 }
-                res.json(post);
-            });
-        } else {
-            res.json({ success: false, message: "You are not authorized to delete this post" });
-        }
-    })
+            }).then(res.status(201).json({ success: true, message: "Comment posted successfully." }));
+
+            //forward to error handler
+            if (err) return next(err);
+        });
+    } catch (error) {
+        //forward to error handler
+        return next({ statusCode: 500, message: error.message });
+    }
+}
+
+export const deletePost = (req, res, next) => {
+    try {
+        //get variables from form post
+        const postId = req.params.id;
+
+        //get id of user who requested DELETE
+        const userId = req.user.id;
+
+        //check if user is admin
+        const isAdmin = req.user.admin;
+
+        //delete model with variables from form post
+        PostMessage.findOne({ _id: postId }, (err, post) => {
+            if (err) return next(err);
+
+            //check if there are any posts, throw error if not found
+            if (!post) return next({ statusCode: 404, message: "Not Found" });
+
+            if (post.user === userId || isAdmin) {
+                PostMessage.findByIdAndDelete(postId, (err, post) => {
+                    if (err) return next(err);
+
+                    res.status(410).json({ success: true, message: "Post has been deleted successfully." });
+                });
+            } else {
+                res.status(401).json({ success: false, message: "You are not authorized to delete this post" });
+            }
+        })
+    } catch (error) {
+        return next({ statusCode: 500, message: error.message });
+    }
+
 };
 
-export const deleteComment = (req, res) => {
-    //get user who requested delete
-    const userId = req.user.id;
+export const deleteComment = (req, res, next) => {
+    try {
+        //get user who requested delete
+        const userId = req.user.id;
 
-    //check if user is admin (true/false)
-    const isAdmin = req.user.admin;
+        //check if user is admin (true/false)
+        const isAdmin = req.user.admin;
 
-    //get variables from form post
-    const postId = req.params.postId;
-    const commentId = req.params.commentId;
+        //get variables from form post
+        const postId = req.params.postId;
+        const commentId = req.params.commentId;
 
-    //get parent post that contains comment with id (commentId)
-    PostMessage.findOne({
-        _id: postId,
-        comment: {
-            $match: {
-                _id: mongoose.Types.ObjectId(commentId),
-                userId: userId
-            }
-        }
-    }, (err, post) => {
-        if (err) res.json(err);
+        //get parent post that contains comment with id (commentId)
+        PostMessage.findOne({ _id: postId, }, (err, post) => {
+            if (err) return next(err);
 
-        //check if there are any posts
-        if (post.length < 1) return res.json({ success: false, message: "Could not find comment. Please try again." });
+            //check if there are any posts, throw error if not found
+            if (!post) return next({ statusCode: 404, message: "Not Found" });
 
-        //get filter comments of retrieved posts to get the post that contains comment with id (commentId)
-        const comment = post.comments.filter((c) => c._id.toString() === commentId);
+            //get filter comments of retrieved posts to get the post that contains comment with id (commentId)
+            const comment = post.comments.filter((c) => c._id.toString() === commentId);
 
-        //check if user is authorized to delete comment (user id from session matches user id from comment)
-        //if user is authorized, delete the comment
-        if (comment[0].userId === userId || isAdmin) {
-            PostMessage.findByIdAndUpdate(postId,
-                { $pull: { comments: { _id: mongoose.Types.ObjectId(commentId) } } },
-                (err, post) => {
-                    //if error, send error message
-                    if (err) {
-                        res.json({ success: false, message: "Something Went wrong. Try again later..." });
+            //check if user is authorized to delete comment (user id from session matches user id from comment)
+            //if user is authorized, delete the comment
+            if (comment[0].userId === userId || isAdmin) {
+                PostMessage.findByIdAndUpdate(postId, {
+                    $pull: {
+                        comments: { _id: mongoose.Types.ObjectId(commentId) }
                     }
-                    res.json({ success: true, message: "Comment deleted." });
+                }, (err, post) => {
+                    //forward to error handler
+                    if (err) return next(err);
+
+                    //if no error, send success message
+                    res.status(410).json({ success: true, message: "Comment has been deleted successfully." });
                 });
-        } else {
-            res.json({ success: false, message: "You are not authorized to delete this comment" });
-        }
-    })
+            } else {
+                //if user is not authorized, send error message
+                res.status(401).json({ success: false, message: "You are not authorized to delete this comment" });
+            }
+        })
+    } catch (error) {
+        //forward to error handler
+        return next({ statusCode: 500, message: error.message });
+    }
 
 }

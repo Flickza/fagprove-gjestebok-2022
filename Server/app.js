@@ -10,7 +10,7 @@ import MongoStore from 'connect-mongo';
 
 //passport
 import passport from 'passport';
-import "./config/passport.js";
+import "./middleware/passport.js";
 
 import pathfinderUI from 'pathfinder-ui';
 
@@ -18,6 +18,11 @@ import pathfinderUI from 'pathfinder-ui';
 import authRoutes from './routes/auth.js';
 import homeRoute from './routes/home.js';
 import postRoutes from './routes/posts.js';
+
+
+//error handler for api errors
+import { apiError } from './error/apiError.js';
+
 
 //create express app
 const app = express();
@@ -67,7 +72,7 @@ app.use('/', homeRoute);
 app.use('/auth', authRoutes);
 
 //posts routes
-app.use('/posts', postRoutes);
+app.use('/posts', postRoutes, apiError);
 
 //templates
 app.use('/templates', express.static('./views/templates'));
@@ -79,6 +84,7 @@ app.use('/pathfinder', function (req, res, next) {
   pathfinderUI(app);
   next();
 }, pathfinderUI.router);
+
 
 //set mongodb connection url and port for server to run on
 const CONNECTION_URL = process.env.CONN_URL;
