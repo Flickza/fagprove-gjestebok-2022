@@ -2,6 +2,7 @@
 import PostMessage from '../models/Post.js';
 import mongoose from 'mongoose';
 
+
 export const getPosts = (req, res, next) => {
     try {
         //id of user who requested posts
@@ -19,7 +20,7 @@ export const getPosts = (req, res, next) => {
         //find all posts of Model
         PostMessage.find({}, (err, posts) => {
             //forward to error handler
-            if (err) return next(err);
+            if (err) return next({ statusCode: 500, message: err.message });
 
             //respond with all model data
             res.status(200).json({ success: true, posts: posts, requestFrom: userId, isAdmin: isAdmin });
@@ -29,12 +30,12 @@ export const getPosts = (req, res, next) => {
         //forward to error handler
         return next({ statusCode: 500, message: error.message });
     }
-}
+};
 
 export const createPost = (req, res, next) => {
     //try saving to collection
     try {
-        if (!req.body.title && !req.body.body) return next({ statusCode: 401, message: 'Title and Body are required' });
+        if (!req.body.title || !req.body.body) return next({ statusCode: 401, message: 'Title and Body are required' });
         //get data of user who sent request
         const userId = req.user.id;
         const username = req.user.username;
@@ -53,7 +54,7 @@ export const createPost = (req, res, next) => {
         });
         Post.save((err, post) => {
             //forward to error handler
-            if (err) return next(err);
+            if (err) return next({ statusCode: 500, message: err.message });
 
             res.status(201).json({ success: true, message: "New post created!" });
         });
@@ -61,7 +62,7 @@ export const createPost = (req, res, next) => {
         //forward to error handler
         return next({ statusCode: 500, message: error.message });
     }
-}
+};
 
 export const updatePost = (req, res, next) => {
     try {
@@ -78,7 +79,7 @@ export const updatePost = (req, res, next) => {
         //update model with variables from form post
         PostMessage.findOne({ _id: id }, (err, post) => {
             //forward to error handler
-            if (err) return next(err);
+            if (err) return next({ statusCode: 500, message: err.message });
             if (!post) return next({ statusCode: 404, message: "Not Found" });
 
             //check if user who requested the update is the user who created the post or if user is admin
@@ -89,13 +90,13 @@ export const updatePost = (req, res, next) => {
                 post.save().then(res.status(201).json({ success: true, message: "The post was edited successfully." }));
             } else {
                 //respond with error message if user is not authorized
-                res.status(401).json({ success: false, message: "You are not authorized to update this port." });
+                res.status(401).json({ success: false, message: "You are not authorized to update this post." });
             }
         });
     } catch (error) {
         return next({ statusCode: 500, message: error.message });
     }
-}
+};
 
 export const commentPost = (req, res, next) => {
     try {
@@ -108,13 +109,15 @@ export const commentPost = (req, res, next) => {
         //get variables from form post
         const comment = req.body.commentField;
 
-        //update model with variables from form post
+        //find parent post by id of post
         PostMessage.findOne({ _id: id }, (err, post) => {
+            //forward to error handler
+            if (err) return next({ statusCode: 500, message: err.message });
 
             //check if there are any posts, throw error if not found
             if (!post) return next({ statusCode: 404, message: "Not Found" });
 
-            //update post with new comment
+            //push comment to comments array of parent post
             post.updateOne({
                 $push: {
                     comments: {
@@ -126,15 +129,12 @@ export const commentPost = (req, res, next) => {
                     }
                 }
             }).then(res.status(201).json({ success: true, message: "Comment posted successfully." }));
-
-            //forward to error handler
-            if (err) return next(err);
         });
     } catch (error) {
         //forward to error handler
         return next({ statusCode: 500, message: error.message });
     }
-}
+};
 
 export const deletePost = (req, res, next) => {
     try {
@@ -149,16 +149,16 @@ export const deletePost = (req, res, next) => {
 
         //delete model with variables from form post
         PostMessage.findOne({ _id: postId }, (err, post) => {
-            if (err) return next(err);
+            if (err) return next({ statusCode: 500, message: err.message });
 
             //check if there are any posts, throw error if not found
             if (!post) return next({ statusCode: 404, message: "Not Found" });
 
             if (post.user === userId || isAdmin) {
                 PostMessage.findByIdAndDelete(postId, (err, post) => {
-                    if (err) return next(err);
+                    if (err) return next({ statusCode: 500, message: err.message });
 
-                    res.status(410).json({ success: true, message: "Post has been deleted successfully." });
+                    res.status(200).json({ success: true, message: "Post has been deleted successfully." });
                 });
             } else {
                 res.status(401).json({ success: false, message: "You are not authorized to delete this post" });
@@ -184,7 +184,7 @@ export const deleteComment = (req, res, next) => {
 
         //get parent post that contains comment with id (commentId)
         PostMessage.findOne({ _id: postId, }, (err, post) => {
-            if (err) return next(err);
+            if (err) return next({ statusCode: 500, message: err.message });
 
             //check if there are any posts, throw error if not found
             if (!post) return next({ statusCode: 404, message: "Not Found" });
@@ -201,10 +201,10 @@ export const deleteComment = (req, res, next) => {
                     }
                 }, (err, post) => {
                     //forward to error handler
-                    if (err) return next(err);
+                    if (err) return next({ statusCode: 500, message: err.message });
 
                     //if no error, send success message
-                    res.status(410).json({ success: true, message: "Comment has been deleted successfully." });
+                    res.status(200).json({ success: true, message: "Comment has been deleted successfully." });
                 });
             } else {
                 //if user is not authorized, send error message
@@ -216,4 +216,4 @@ export const deleteComment = (req, res, next) => {
         return next({ statusCode: 500, message: error.message });
     }
 
-}
+};

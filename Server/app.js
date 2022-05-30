@@ -10,12 +10,11 @@ import MongoStore from 'connect-mongo';
 
 //passport
 import passport from 'passport';
-import "./middleware/passport.js";
 
 import pathfinderUI from 'pathfinder-ui';
 
 //routes
-import authRoutes from './routes/auth.js';
+import authRoutes from './routes/user.js';
 import homeRoute from './routes/home.js';
 import postRoutes from './routes/posts.js';
 
@@ -29,6 +28,8 @@ const app = express();
 
 //import environment variables
 dotenv.config();
+
+import "./middleware/passport.js";
 
 //set view engine to EJS
 app.set('view engine', 'ejs');
@@ -51,7 +52,7 @@ const sessionStore = new MongoStore({
 app.use(session({
   secret: process.env.SECRET,
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false,
   store: sessionStore,
   cookie: {
     maxAge: 1000 * 60 * 60 * 24 // 1 day
@@ -61,6 +62,7 @@ app.use(session({
 //start passport middleware
 app.use(passport.initialize());
 app.use(passport.session());
+
 
 //set static folder location route
 app.use(express.static("./" + 'src'));

@@ -1,22 +1,16 @@
 import User from '../models/User.js';
-import { genPassword } from '../config/validate/passwordUtils.js';
+import { newLocalUser } from '../models/user/newLocalUser.js';
 
 export const logout = (req, res, next) => {
+    //log out the user
     req.logout((err) => {
-        if (err) { return next(err); }
+        if (err) return next(err);
+        //redirect to homepage
         res.redirect('/');
     });
 }
 
-export const localLoginScreen = (req, res) => {
-    try {
-        res.render('../views/auth/login.ejs', { root: './' });
-    } catch (error) {
-        res.json({ message: error.message });
-    }
-}
-
-export const localLoginAuth = (req, res) => {
+export const login = (req, res) => {
     try {
         res.json({ success: true, message: "You have been logged in!" })
     } catch (error) {
@@ -24,37 +18,32 @@ export const localLoginAuth = (req, res) => {
     }
 }
 
-export const localNewUser = (req, res) => {
+export const newUser = (req, res) => {
     try {
-        if (req.body.password !== req.body.repeatPassword) return res.json({ success: false, message: "Passwords dont match!" });
-        const saltHash = genPassword(req.body.password);
+        //set request data into data variable
+        const data = req.body;
+        console.log(data);
+        //if the two passwords dont match return error
+        if (data.password !== data.repeatPassword) return res.json({ success: false, message: "Passwords dont match!" });
+        //check if user exists with email
+        User.findOne({ "email.value": data.email }, (err, post) => {
+            console.log(post);
+            //if there is no user, create it
+            if (post === null) {
+                const newUser = newLocalUser(data);
 
-        const salt = saltHash.salt;
-        const hash = saltHash.hash;
+                newUser.save((err) => {
+                    if (err) return res.json({ success: false, message: err });
 
-        const Users = new User({
-            email: req.body.email,
-            username: req.body.email.split("@")[0],
-            firstName: req.body.firstName,
-            lastName: req.body.lastName,
-            source: "local",
-            hash: hash,
-            salt: salt
-        });
-
-        Users.save((err, user) => {
-            if (err) return res.json({ success: false, message: err });
-            res.json({ success: true, message: "User created!", user: user });
+                    res.json({ success: true, message: "User created!" });
+                });
+            } else {
+                //return alert message if user exists
+                res.json({ success: false, message: `Email already exists from source ${post.source.value}` });
+            }
         });
     } catch (error) {
-        res.json({ success: false, message: error });
+        return res.json({ success: false, message: error });
     }
 }
 
-export const localNewUserScreen = (req, res) => {
-    try {
-        res.render('../views/auth/register.ejs', { root: './' });
-    } catch (error) {
-        res.json({ message: error.message });
-    }
-}

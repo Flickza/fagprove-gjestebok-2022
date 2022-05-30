@@ -70,7 +70,8 @@ export const renderFetch = async (pagenum) => {
         const html = await renderPosts(data, pagenum);
 
         //append html markup to messages div
-        $(".messages").html(html);
+        //hide the element, set the html, and give it a fade in animation
+        $(".messages").hide().html(html).fadeIn(300);
     });
 }
 

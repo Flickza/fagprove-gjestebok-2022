@@ -2,17 +2,35 @@ import mongoose from "mongoose";
 
 const User = mongoose.Schema({
     email: {
-        type: String,
-        required: true,
-        unique: true
+        value: {
+            type: String,
+            required: true,
+            unique: true
+        },
+        verified: Boolean
     },
-    username: String,
+    displayName: String,
     firstName: String,
     lastName: String,
     profilePhoto: String,
     source: {
-        type: String,
-        required: true
+        value: {
+            type: String,
+            required: true,
+        },
+        ids:
+        {
+            googleId: {
+                type: String,
+                default: null,
+                required: false,
+            },
+            appleId: {
+                type: String,
+                default: null,
+                required: false
+            }
+        },
     },
     lastVisited: {
         type: Date,
@@ -23,7 +41,8 @@ const User = mongoose.Schema({
     admin: {
         type: Boolean,
         default: false
-    }
+    },
+
 });
 
 
