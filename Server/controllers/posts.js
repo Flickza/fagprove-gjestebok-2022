@@ -10,7 +10,6 @@ export const getPosts = (req, res, next) => {
 
         //if user who request is admin or not
         let isAdmin = false;
-        console.log(req.user);
         //check if there is a user logged in making the request
         if (req.user) {
             userId = req.user._id;

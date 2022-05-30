@@ -7,26 +7,29 @@
   margin: 0;
 }
 .main {
-    margin-top: 5%;
-    width: 943px;
-    height: 800px;
-    font-size: 20px;
+  margin-top: 5%;
+  width: 943px;
+  height: 800px;
+  font-size: 20px;
 }
 
 .loginForm {
-    width: 60%;
-    height: 60%;
+  width: 60%;
+  height: 100%;
 }
 
-  
+.errorText {
+  font-size: 15px;
+}
+
 .btn-back {
-  width:100%;
+  width: 100%;
   height: 60px;
   font-size: 20px;
 }
 
 .btn-login {
-  width:100%;
+  width: 100%;
   height: 60px;
   font-size: 20px;
 }
@@ -39,7 +42,3 @@ a:hover {
   text-decoration: none;
   color: inherit;
 }
-  
-  
-  
-  
