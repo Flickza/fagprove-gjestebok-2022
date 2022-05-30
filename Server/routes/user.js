@@ -8,20 +8,21 @@ import { alreadyAuthenticated, isAuthenticated } from '../middleware/isAuthentic
 const router = express.Router();
 
 
-//default screen
+//Views
 router.get('/', alreadyAuthenticated, loginOptionsView);
+router.get('/register', alreadyAuthenticated, registerView);
+router.get('/login', alreadyAuthenticated, loginView);
 
 //local auth
-router.get('/login', alreadyAuthenticated, loginView);
 router.post('/login', alreadyAuthenticated, passport.authenticate('local', { failWithError: true }), success, failed);
+
+//local registration
+router.post('/register', alreadyAuthenticated, newUser);
 
 //google auth
 router.get('/google', alreadyAuthenticated, passport.authenticate('google', { scope: ['email', 'profile'] }));
 router.get('/google/callback', alreadyAuthenticated, passport.authenticate('google', { successRedirect: '/', failWithError: true }), success, failed);
 
-//local registration
-router.get('/register', alreadyAuthenticated, registerView);
-router.post('/register', alreadyAuthenticated, newUser);
 
 //logout
 router.get('/logout', isAuthenticated, logout);
