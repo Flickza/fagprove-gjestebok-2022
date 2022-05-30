@@ -12,7 +12,7 @@ export const getPosts = (req, res, next) => {
         let isAdmin = false;
         //check if there is a user logged in making the request
         if (req.user) {
-            userId = req.user._id;
+            userId = req.user.id;
             isAdmin = req.user.admin;
         }
 

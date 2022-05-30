@@ -13,7 +13,7 @@ router.get('/', alreadyAuthenticated, loginOptionsView);
 
 //local auth
 router.get('/login', alreadyAuthenticated, loginView);
-router.post('/login', passport.authenticate('local', { failWithError: true }), success, failed);
+router.post('/login', alreadyAuthenticated, passport.authenticate('local', { failWithError: true }), success, failed);
 
 //google auth
 router.get('/google', alreadyAuthenticated, passport.authenticate('google', { scope: ['email', 'profile'] }));

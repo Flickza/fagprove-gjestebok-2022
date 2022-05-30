@@ -9,17 +9,22 @@ export const logout = (req, res, next) => {
         res.redirect('/');
     });
 }
+//success middleware for authenticated user
 export const success = (req, res, next) => {
+    //send success message
     if (req.user) {
         return res.json({ success: true, message: "You have been logged in!" });
     }
     next();
 }
+//error middleware for authentication
 export const failed = (err, req, res, next) => {
+    //send error message
     if (err) return res.json({ success: false, message: err });
+    //no error, continue
     next();
 }
-
+//new user
 export const newUser = (req, res) => {
     try {
         //set request data into data variable

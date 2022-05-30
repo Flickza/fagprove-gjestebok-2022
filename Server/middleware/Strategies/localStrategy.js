@@ -1,6 +1,6 @@
 import LocalStrategy from 'passport-local';
-import User from '../models/User.js';
-import { validPassword } from '../config/validate/passwordUtils.js';
+import User from '../../models/User.js';
+import { validPassword } from '../../config/validate/passwordUtils.js';
 
 const customfields = {
     usernameField: 'email',

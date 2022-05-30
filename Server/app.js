@@ -15,7 +15,7 @@ import pathfinderUI from 'pathfinder-ui';
 
 //routes
 import authRoutes from './routes/user.js';
-import homeRoute from './routes/home.js';
+import homeRoute from './routes/index.js';
 import postRoutes from './routes/posts.js';
 
 

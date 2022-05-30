@@ -1,7 +1,7 @@
 import passport from 'passport';
 import User from '../models/User.js';
-import { googleStrategy } from './passportGoogle.js';
-import { localStrategy } from './passportLocal.js';
+import { googleStrategy } from './Strategies/googleStrategy.js';
+import { localStrategy } from './Strategies/localStrategy.js';
 
 passport.use(googleStrategy);
 passport.use(localStrategy);
