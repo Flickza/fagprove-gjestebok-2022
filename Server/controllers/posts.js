@@ -10,7 +10,7 @@ export const getPosts = (req, res, next) => {
 
         //if user who request is admin or not
         let isAdmin = false;
-
+        console.log(req.user);
         //check if there is a user logged in making the request
         if (req.user) {
             userId = req.user._id;
@@ -38,16 +38,18 @@ export const createPost = (req, res, next) => {
         if (!req.body.title || !req.body.body) return next({ statusCode: 401, message: 'Title and Body are required' });
         //get data of user who sent request
         const userId = req.user.id;
-        const username = req.user.username;
+        const displayName = req.user.displayName;
 
         //get variables from form post
         const title = req.body.title;
         const body = req.body.body;
+        const profilePhoto = req.user.profilePhoto;
 
         //create a new model with variables from form post
         const Post = new PostMessage({
             userId: userId,
-            username: username,
+            displayName: displayName,
+            profilePhoto: profilePhoto,
             title: title,
             body: body,
             createdAt: new Date()
@@ -105,7 +107,7 @@ export const commentPost = (req, res, next) => {
 
         //user who commented
         const userId = req.user.id;
-        const authorName = req.user.username;
+        const authorName = req.user.displayName;
         //get variables from form post
         const comment = req.body.commentField;
 
@@ -154,7 +156,7 @@ export const deletePost = (req, res, next) => {
             //check if there are any posts, throw error if not found
             if (!post) return next({ statusCode: 404, message: "Not Found" });
 
-            if (post.user === userId || isAdmin) {
+            if (post.userId === userId || isAdmin) {
                 PostMessage.findByIdAndDelete(postId, (err, post) => {
                     if (err) return next({ statusCode: 500, message: err.message });
 

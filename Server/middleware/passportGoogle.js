@@ -13,19 +13,18 @@ export const googleStrategy = new GoogleStrategy({
     callbackURL: process.env.GOOGLE_CALLBACK_URI,
     passReqToCallback: true
 }, (request, accessToken, refreshToken, profile, done) => {
-    User.findOne({ "email.value": profile.emails[0].value, "source.ids.googleId": profile.id }, (err, user) => {
+    User.findOne({ "email.value": profile.emails[0].value.toLowerCase(), "source.ids.googleId": profile.id }, (err, user) => {
         if (err) return done(err);
-
         if (user === null) {
             //create model of Google user
             const newUser = newGoogleUser(profile);
             //save user
-            newUser.save((err) => {
+            newUser.save((err, user) => {
                 if (err) return done(err);
                 //continue with user
                 return done(null, user);
             });
         }
-        if(user) return done(null, user);
+        if (user) return done(null, user);
     });
 });

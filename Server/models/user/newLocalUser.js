@@ -1,4 +1,5 @@
 import { genPassword } from "../../config/validate/passwordUtils.js";
+import User from '../User.js';
 
 export const newLocalUser = (user) => {
     const saltHash = genPassword(user.password);
@@ -6,9 +7,9 @@ export const newLocalUser = (user) => {
     const salt = saltHash.salt;
     const hash = saltHash.hash;
 
-    const User = new User({
+    const newUser = new User({
         email: {
-            value: user.email,
+            value: user.email.toLowerCase(),
             verified: false
         },
         displayName: user.firstName + " " + user.lastName,
@@ -21,5 +22,5 @@ export const newLocalUser = (user) => {
         salt: salt
     });
 
-    return User;
+    return newUser;
 }

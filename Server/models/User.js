@@ -12,7 +12,10 @@ const User = mongoose.Schema({
     displayName: String,
     firstName: String,
     lastName: String,
-    profilePhoto: String,
+    profilePhoto: {
+        type: String,
+        default: "/img/defaultProfile.png"
+    },
     source: {
         value: {
             type: String,

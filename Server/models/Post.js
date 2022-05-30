@@ -5,7 +5,11 @@ const Post = mongoose.Schema({
         type: String,
         required: true  
     },
-    username: {
+    profilePhoto: {
+        type: String,
+        default: "/img/defaultProfile.png"
+    },
+    displayName: {
         type: String,
         required: true
     },

@@ -9,25 +9,25 @@ export const logout = (req, res, next) => {
         res.redirect('/');
     });
 }
-
-export const login = (req, res) => {
-    try {
-        res.json({ success: true, message: "You have been logged in!" })
-    } catch (error) {
-        res.json({ success: false, message: error });
+export const success = (req, res, next) => {
+    if (req.user) {
+        return res.json({ success: true, message: "You have been logged in!" });
     }
+    next();
+}
+export const failed = (err, req, res, next) => {
+    if (err) return res.json({ success: false, message: err });
+    next();
 }
 
 export const newUser = (req, res) => {
     try {
         //set request data into data variable
         const data = req.body;
-        console.log(data);
         //if the two passwords dont match return error
         if (data.password !== data.repeatPassword) return res.json({ success: false, message: "Passwords dont match!" });
         //check if user exists with email
-        User.findOne({ "email.value": data.email }, (err, post) => {
-            console.log(post);
+        User.findOne({ "email.value": data.email.toLowerCase() }, (err, post) => {
             //if there is no user, create it
             if (post === null) {
                 const newUser = newLocalUser(data);

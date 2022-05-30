@@ -8,19 +8,19 @@ const customfields = {
 };
 
 const verifyCallback = (email, password, done) => {
-    User.findOne({ email: email }, function (err, user) {
-        if (err) {
-            return done(err);
-        }
-        if (!user) {
-            return done(null, false, { message: 'Incorrect email or password.' });
-        }
+    User.findOne({ "email.value": email.toLowerCase() }, function (err, user) {
+        if (err) return done(err);
+
+        if (user === null) return done('Incorrect email or password.');
+
+        if (user.source.value !== "local") return done(`Email is associated with a ${user.source.value} account.`);
+
         const isValid = validPassword(password, user.hash, user.salt);
 
         if (isValid) {
             return done(null, user);
         } else {
-            return done(null, false);
+            return done('Incorrect email or password.');
         }
     });
 }

@@ -5,6 +5,6 @@ const router = express.Router();
 
 router.get('/', home);
 router.get('/failed', (req, res) => {
-    res.json({ error: "error" });
+    res.status(404).json({success: false, message: "Failed to authenticate"});
 })
 export default router;
