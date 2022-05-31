@@ -25,6 +25,6 @@ router.get('/google/callback', alreadyAuthenticated, passport.authenticate('goog
 
 
 //logout
-router.get('/logout', isAuthenticated, logout);
+router.post('/logout', isAuthenticated, logout);
 
 export default router;

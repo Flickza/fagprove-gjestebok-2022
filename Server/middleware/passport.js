@@ -12,10 +12,9 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser((userId, done) => {
     User.findOne({
-        $or: [
-            { _id: userId },
-            { "source.ids.googleId": userId }
-        ]}, (err, user) => {
+        $or: [{ _id: userId }, { "source.ids.googleId": userId }]
+    },
+    (err, user) => {
         done(err, user);
     });
 });

@@ -27,11 +27,6 @@ const User = mongoose.Schema({
                 type: String,
                 default: null,
                 required: false,
-            },
-            appleId: {
-                type: String,
-                default: null,
-                required: false
             }
         },
     },

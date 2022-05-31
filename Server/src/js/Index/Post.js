@@ -1,5 +1,11 @@
 import { paginationLogic } from "./Pagination.js";
 import './ejs/ejs.min.js';
+
+const GLOBAL_CONFIG = {
+    //limit of posts per page
+    POSTS_LIMIT: 2,
+};
+
 //Fetch posts from posts route
 export const fetchPosts = () => {
     //clear the messages div before fetching new messages
@@ -29,7 +35,7 @@ export const renderPosts = async (data, currentPage) => {
         return "There are no posts :(";
     }
     //limit of posts per page
-    const limit = 2;
+    let limit = GLOBAL_CONFIG.POSTS_LIMIT;
 
     //set currentpage in data attribute of messages parent div
     $(".messages").attr("data-currentpage", currentPage);

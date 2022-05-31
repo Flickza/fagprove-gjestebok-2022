@@ -107,6 +107,7 @@ export const commentPost = (req, res, next) => {
         //user who commented
         const userId = req.user.id;
         const authorName = req.user.displayName;
+        
         //get variables from form post
         const comment = req.body.commentField;
 

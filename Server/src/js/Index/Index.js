@@ -4,6 +4,7 @@ import { handleFormState, handleFormSubmit } from "./Form.js";
 //get current page of posts
 let currentPage = $(".messages").attr("data-currentpage");
 
+//render posts on first load.
 await renderFetch(currentPage);
 
 
