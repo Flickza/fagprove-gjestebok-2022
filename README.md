@@ -1,5 +1,18 @@
 # fagprove-gjestebok-2022
 # Features
+This is a simple message app, kind of like twitter but not twitter at all.
+# Built with
+## Backend
+- [expressjs](https://expressjs.com/)
+- [mongodb](https://www.mongodb.com/)
+- [nodejs](https://nodejs.org/)
+
+## Frontend
+- [HTML5](https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5)
+- [CSS3](https://developer.mozilla.org/en-US/docs/Web/CSS)
+- [Bootstrap](https://getbootstrap.com/)
+- [JQuery](https://jquery.com/)
+
 # Getting started
 Follow these instructions to get the project set up locally:
 - Installer [Nodejs](https://nodejs.org/en/) og [MongoDB](https://www.mongodb.com/download-center/community)
