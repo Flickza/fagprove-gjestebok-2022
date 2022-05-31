@@ -11,33 +11,30 @@ Follow these instructions to get the project set up locally:
     ```
 
 - Installer pakker  
-    
     ```
     cd .\Server\
 
     npm install
- 
     ```
-- Sett opp env fil  
+- Set up environment variables
+
+    Create a file called .env with the following content:
+
+    ```
+    PORT = "PORT"
+
+    CONN_URL = "MONGO URL STRING"
+
+    GOOGLE_CLIENT_ID = "GOOGLE CLIENT ID"
+
+    GOOGLE_CLIENT_SECRET = "GOOGLE CLIENT SECRET"
+
+    GOOGLE_CALLBACK_URI = "GOOGLE CALLBACK URI"
+
+    SECRET = 'SECRET'
 
     ```  
-    Create a file called .env with the following content:  
-
-    PORT = "PORT"  
-
-    CONN_URL = "MONGO URL STRING"  
-
-    GOOGLE_CLIENT_ID = "GOOGLE CLIENT ID"  
-
-    GOOGLE_CLIENT_SECRET = "GOOGLE CLIENT SECRET"  
-
-    GOOGLE_CALLBACK_URI = "GOOGLE CALLBACK URI"  
-
-    SECRET = 'SECRET'  
-
-    ```  
-
-    - Start the server  
+- Start the server  
 
     ```  
     *Make sure you are in the .\Server\ directory  
