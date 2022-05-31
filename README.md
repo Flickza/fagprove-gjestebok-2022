@@ -2,21 +2,23 @@
 # Features
 # Getting started
 Follow these instructions to get the project set up locally:
+- Installer [Nodejs](https://nodejs.org/en/) og [MongoDB](https://www.mongodb.com/download-center/community)
 
-    - Installer [Nodejs](https://nodejs.org/en/) og [MongoDB](https://www.mongodb.com/download-center/community)
+- Clone git repository
 
-    - Clone git repository
+    ```
+    git clone https://github.com/Flickza/fagprove-gjestebok-2022
+    ```
 
-    ```git clone https://github.com/Flickza/fagprove-gjestebok-2022```
-
-    - Installer pakker  
+- Installer pakker  
+    
     ```
     cd .\Server\
 
     npm install
-
-    ```  
-    - Sett opp env fil  
+ 
+    ```
+- Sett opp env fil  
 
     ```  
     Create a file called .env with the following content:  
@@ -34,7 +36,7 @@ Follow these instructions to get the project set up locally:
     SECRET = 'SECRET'  
 
     ```  
-    
+
     - Start the server  
 
     ```  

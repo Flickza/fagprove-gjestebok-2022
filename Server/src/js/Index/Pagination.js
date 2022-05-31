@@ -14,19 +14,7 @@ const paginationMarkup = (pages, limit, currentPage) => {
         }
     }
     //return html element with page numbers included
-    return ` <ul class="pagination">
-                <li class="page-item">
-                    <a class="page-link" id="prevPage" data-page="prev" data-minPage="${parseInt(1)}" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                </li>
-                    ${paginationHtml}
-                <li class="page-item">
-                    <a class="page-link" id="nextPage" data-page="next" data-maxPage="${pageAmount}" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                </li>
-            </ul>`;
+    return ` <ul class="pagination">${paginationHtml}</ul>`;
 }
 
 export const paginationLogic = (posts, currentPage, limit) => {
