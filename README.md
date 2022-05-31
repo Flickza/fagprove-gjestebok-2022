@@ -15,7 +15,7 @@ This is a simple message app, kind of like twitter but not twitter at all.
 
 # Getting started
 Follow these instructions to get the project set up locally:
-- Installer [Nodejs](https://nodejs.org/en/) og [MongoDB](https://www.mongodb.com/download-center/community)
+- Install [Nodejs](https://nodejs.org/en/) & [MongoDB](https://www.mongodb.com/download-center/community)
 
 - Clone git repository
 
