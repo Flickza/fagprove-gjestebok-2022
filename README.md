@@ -36,7 +36,7 @@ Follow these instructions to get the project set up locally:
     ```
 
 - Start the server  
-    * Make sure you are in the .\Server\ directory 
+* Make sure you are in the .\Server\ directory 
     ```  
     npm start  
 
