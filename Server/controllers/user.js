@@ -35,8 +35,10 @@ export const newUser = (req, res) => {
         User.findOne({ "email.value": data.email.toLowerCase() }, (err, post) => {
             //if there is no user, create it
             if (post === null) {
+                //create new user model
                 const newUser = newLocalUser(data);
-
+                
+                //save new user model
                 newUser.save((err) => {
                     if (err) return res.json({ success: false, message: err });
 
