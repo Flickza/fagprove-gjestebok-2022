@@ -28,7 +28,7 @@ export const getPosts = (req, res, next) => {
             //respond with all model data
             res.status(200).json({ success: true, posts: posts, requestFrom: userId, isAdmin: isAdmin });
 
-        }).sort({ createdAt: 'asc' });
+        }).sort({ createdAt: 'desc' });
     } catch (error) {
         //forward to error handler
         return next({ statusCode: 500, message: error.message });
