@@ -29,7 +29,7 @@
     <div class="cardContent d-flex flex-column">
       <div class="cardTitle d-flex flex-row justify-content-between">
         <span class="title fw-bold mt-2 px-2"><%= post.title.toUpperCase() %></span>
-        <span class="date mt-2"><%= post.createdAt %></span>
+        <span class="date mt-2"><%= post.createdAt.split("T")[0] + " " + post.createdAt.split("T")[1].split(".")[0] %></span>
       </div>
       <hr />
       <div class="cardBody mt-2 px-2">
@@ -38,9 +38,11 @@
       <hr class="mt-1" />
       <div class="cardFooter">
         <div class="actions d-flex flex-column flex-md-row align-items-center">
+          <% if(post.updatedAt != null){ %>
           <span class="date ms-auto text-muted fs-9"
-            >Redigert: <%= post.updatedAt %></span
+            >Redigert: <%= post.updatedAt.split("T")[0] + " " + post.updatedAt.split("T")[1].split(".")[0] %></span
           >
+          <% } %>
         </div>
         <!-- check if request was made from a logged in user -->
         <!-- if user is not logged in, hide comment field -->

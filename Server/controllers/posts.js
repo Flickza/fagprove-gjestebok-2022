@@ -2,6 +2,10 @@
 import PostMessage from '../models/Post.js';
 import mongoose from 'mongoose';
 
+//get current dateTime, set to Europe/moscow because Europe/Norway UTC:00:00?
+const dateTime = () => {
+    return new Date().toLocaleString('nb-NO', { timeZone: 'Europe/Moscow' });        
+};
 
 export const getPosts = (req, res, next) => {
     try {
@@ -24,7 +28,7 @@ export const getPosts = (req, res, next) => {
             //respond with all model data
             res.status(200).json({ success: true, posts: posts, requestFrom: userId, isAdmin: isAdmin });
 
-        }).sort({ createdAt: 'desc' });
+        }).sort({ createdAt: 'asc' });
     } catch (error) {
         //forward to error handler
         return next({ statusCode: 500, message: error.message });
@@ -51,7 +55,8 @@ export const createPost = (req, res, next) => {
             profilePhoto: profilePhoto,
             title: title,
             body: body,
-            createdAt: new Date()
+            createdAt: dateTime(),
+            updatedAt: null,
         });
         Post.save((err, post) => {
             //forward to error handler
@@ -88,6 +93,7 @@ export const updatePost = (req, res, next) => {
             if (post._id === userId || isAdmin) {
                 post.title = title;
                 post.body = body;
+                post.updatedAt = dateTime();
                 post.save().then(res.status(201).json({ success: true, message: "The post was edited successfully." }));
             } else {
                 //respond with error message if user is not authorized
@@ -127,7 +133,7 @@ export const commentPost = (req, res, next) => {
                         userId: userId,
                         authorName: authorName,
                         comment: comment,
-                        createdAt: new Date()
+                        createdAt: dateTime(),
                     }
                 }
             }).then(res.status(201).json({ success: true, message: "Comment posted successfully." }));
