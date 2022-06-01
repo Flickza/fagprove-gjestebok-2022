@@ -1,6 +1,7 @@
 //Server
 import express from 'express';
 import session from 'express-session';
+import expressSanitizer from 'express-sanitizer';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 
@@ -37,6 +38,7 @@ app.set('view engine', 'ejs');
 //set json data limit to 50mb
 app.use(express.json({ limit: '50mb', extended: true }));
 
+app.use(expressSanitizer());
 //start cookie parser
 app.use(cookieParser());
 

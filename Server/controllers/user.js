@@ -27,8 +27,17 @@ export const failed = (err, req, res, next) => {
 //new user
 export const newUser = (req, res) => {
     try {
-        //set request data into data variable
-        const data = req.body;
+        //sanitize data from client
+        const data = {
+            email: req.sanitize(req.body.email),
+            firstName: req.sanitize(req.body.firstName),
+            lastName: req.sanitize(req.body.lastName),
+            password: req.sanitize(req.body.password),
+            password2: req.sanitize(req.body.repeatPassword)
+        }
+
+        //if the form fields are empty after sanitizing, return error
+        if (data.firstName.length < 1 || data.lastName.length < 1 || data.email.length < 1) return res.json({ success: false, message: "Found empty fields." });
         //if the two passwords dont match return error
         if (data.password !== data.repeatPassword) return res.json({ success: false, message: "Passwords dont match!" });
         //check if user exists with email
@@ -37,7 +46,7 @@ export const newUser = (req, res) => {
             if (post === null) {
                 //create new user model
                 const newUser = newLocalUser(data);
-                
+
                 //save new user model
                 newUser.save((err) => {
                     if (err) return res.json({ success: false, message: err });

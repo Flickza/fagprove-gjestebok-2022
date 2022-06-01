@@ -42,11 +42,11 @@ export const createPost = (req, res, next) => {
         //get data of user who sent request
         const userId = req.user.id;
         const displayName = req.user.displayName;
-
-        //get variables from form post
-        const title = req.body.title;
-        const body = req.body.body;
         const profilePhoto = req.user.profilePhoto;
+
+        //get variables from form post and sanitize
+        const title = req.sanitize(req.body.title);
+        const body = req.sanitize(req.body.body);
 
         //create a new model with variables from form post
         const Post = new PostMessage({
@@ -78,9 +78,9 @@ export const updatePost = (req, res, next) => {
         const isAdmin = req.user.admin;
 
         //get variables from post request
-        const id = req.params.id;
-        const title = req.body.title;
-        const body = req.body.body;
+        const id = req.sanitize(req.params.id);
+        const title = req.sanitize(req.body.title);
+        const body = req.sanitize(req.body.body);
 
         //update model with variables from form post
         PostMessage.findOne({ _id: id }, (err, post) => {
@@ -108,15 +108,17 @@ export const updatePost = (req, res, next) => {
 export const commentPost = (req, res, next) => {
     try {
         //id of post to be commented
-        const id = req.params.id;
+        const id = req.sanitize(req.params.id);
 
         //user who commented
         const userId = req.user.id;
         const authorName = req.user.displayName;
         
         //get variables from form post
-        const comment = req.body.commentField;
+        const comment = req.sanitize(req.body.commentField);
 
+        if (comment.length < 1) return next({ statusCode: 200, message: "Comment field is empty?" });
+        
         //find parent post by id of post
         PostMessage.findOne({ _id: id }, (err, post) => {
             //forward to error handler
@@ -147,7 +149,7 @@ export const commentPost = (req, res, next) => {
 export const deletePost = (req, res, next) => {
     try {
         //get variables from form post
-        const postId = req.params.id;
+        const postId = req.sanitize(req.params.id);
 
         //get id of user who requested DELETE
         const userId = req.user.id;
@@ -187,8 +189,8 @@ export const deleteComment = (req, res, next) => {
         const isAdmin = req.user.admin;
 
         //get variables from form post
-        const postId = req.params.postId;
-        const commentId = req.params.commentId;
+        const postId = req.sanitize(req.params.postId);
+        const commentId = req.sanitize(req.params.commentId);
 
         //get parent post that contains comment with id (commentId)
         PostMessage.findOne({ _id: postId, }, (err, post) => {
