@@ -33,7 +33,7 @@ export const newUser = (req, res) => {
             firstName: req.sanitize(req.body.firstName),
             lastName: req.sanitize(req.body.lastName),
             password: req.sanitize(req.body.password),
-            password2: req.sanitize(req.body.repeatPassword)
+            repeatPassword: req.sanitize(req.body.repeatPassword)
         }
 
         //if the form fields are empty after sanitizing, return error
